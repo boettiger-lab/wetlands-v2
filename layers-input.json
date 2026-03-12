@@ -1,0 +1,110 @@
+{
+    "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+    "titiler_url": "https://titiler.nrp-nautilus.io",
+    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "view": {
+        "center": [0, 20],
+        "zoom": 2
+    },
+    "collections": [
+        {
+            "collection_id": "wetlands-global-unified",
+            "group": "Wetlands",
+            "assets": [
+                {
+                    "id": "glwd-main-class-cog",
+                    "display_name": "Global Wetlands (GLWD v2)",
+                    "visible": false,
+                    "legend_type": "categorical"
+                },
+                {
+                    "id": "ramsar-pmtiles",
+                    "display_name": "Ramsar Sites",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#FF1493",
+                        "fill-opacity": 0.5
+                    },
+                    "tooltip_fields": ["Site name", "Country", "Area (ha)", "Wetland Type"]
+                }
+            ]
+        },
+        {
+            "collection_id": "irrecoverable-carbon",
+            "group": "Environment",
+            "assets": [
+                {
+                    "id": "v2-vulnerable-2024-cog",
+                    "display_name": "Vulnerable Carbon (2024)",
+                    "visible": false,
+                    "colormap": "reds"
+                }
+            ]
+        },
+        {
+            "collection_id": "ncp-biodiversity",
+            "group": "Environment",
+            "assets": [
+                {
+                    "id": "ncp-biod-nathab-cog",
+                    "display_name": "Nature's Contributions to People",
+                    "visible": false,
+                    "colormap": "viridis",
+                    "rescale": "0,19",
+                    "legend_label": "NCP Score"
+                }
+            ]
+        },
+        {
+            "collection_id": "wdpa-december-2025",
+            "group": "Protected Areas",
+            "assets": [
+                {
+                    "id": "wdpa-pmtiles",
+                    "display_name": "Protected Areas (WDPA)",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": ["match", ["get", "IUCN_CAT"],
+                            "Ia", "#26633A",
+                            "Ib", "#26633A",
+                            "II", "#3E9C47",
+                            "III", "#7EB3D3",
+                            "IV", "#7EB3D3",
+                            "V", "#BDBDBD",
+                            "VI", "#BDBDBD",
+                            "#888888"
+                        ],
+                        "fill-opacity": 0.6
+                    },
+                    "tooltip_fields": ["NAME_ENG", "IUCN_CAT", "DESIG_ENG", "ISO3", "GIS_AREA", "STATUS_YR"]
+                }
+            ]
+        },
+        {
+            "collection_id": "hydrobasins-v1c",
+            "group": "Hydrology",
+            "assets": [
+                {
+                    "id": "unified-pmtiles",
+                    "display_name": "Watersheds (HydroBASINS L6)",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "rgba(0, 100, 200, 0.1)",
+                        "fill-opacity": 0.3
+                    },
+                    "tooltip_fields": ["HYBAS_ID", "PFAF_ID", "UP_AREA", "SUB_AREA"]
+                }
+            ]
+        },
+        {
+            "collection_id": "overture-divisions",
+            "group": "Reference",
+            "assets": []
+        },
+        {
+            "collection_id": "inaturalist-ranges",
+            "group": "Biodiversity",
+            "assets": []
+        }
+    ]
+}
