@@ -28,8 +28,7 @@ The DuckDB instance is pre-configured with:
 When writing SQL:
 - Use `read_parquet('s3://…')` with the S3 paths from the dataset catalog below
 - For partitioned datasets, use the `/**` wildcard path
-- H3 columns are typically `h3_index` at resolution 4–8
-- Use `h3_cell_to_boundary_wkt(h3_index)` for geometry conversion
+- H3 columns are typically `h8`, `h9`, etc. at various resolutions, plus `h0` for partition pruning
 - Always use `LIMIT` to keep results manageable
 - Table aliases make joins clearer
 
