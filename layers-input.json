@@ -2,9 +2,11 @@
     "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
     "titiler_url": "https://titiler.nrp-nautilus.io",
     "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "default_basemap": "plain",
     "view": {
         "center": [0, 20],
-        "zoom": 2
+        "zoom": 2,
+        "globe": true
     },
     "welcome": {
         "message": "Hi! I can help you explore global wetlands data and control the map. Try asking:",
@@ -24,13 +26,13 @@
                 {
                     "id": "glwd-main-class-cog",
                     "display_name": "Global Wetlands (GLWD v2)",
-                    "visible": false,
+                    "visible": true,
                     "legend_type": "categorical"
                 },
                 {
                     "id": "ramsar-pmtiles",
                     "display_name": "Ramsar Sites",
-                    "visible": false,
+                    "visible": true,
                     "default_style": {
                         "fill-color": "#FF1493",
                         "fill-opacity": 0.5
@@ -96,13 +98,20 @@
             "assets": [
                 {
                     "id": "unified-pmtiles",
-                    "display_name": "Watersheds (HydroBASINS L6)",
+                    "display_name": "Watersheds (HydroBASINS)",
                     "visible": false,
                     "default_style": {
                         "fill-color": "rgba(0, 100, 200, 0.1)",
                         "fill-opacity": 0.3
                     },
-                    "tooltip_fields": ["HYBAS_ID", "PFAF_ID", "UP_AREA", "SUB_AREA"]
+                    "tooltip_fields": ["HYBAS_ID", "PFAF_ID", "UP_AREA", "SUB_AREA"],
+                    "versions": [
+                        { "label": "L3 – Major Basins", "asset_id": "level-03-pmtiles" },
+                        { "label": "L4", "asset_id": "level-04-pmtiles" },
+                        { "label": "L5", "asset_id": "level-05-pmtiles" },
+                        { "label": "L6 – Sub-catchments", "asset_id": "unified-pmtiles" }
+                    ],
+                    "default_version": "L6 – Sub-catchments"
                 }
             ]
         },
