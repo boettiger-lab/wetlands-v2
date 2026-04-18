@@ -11,13 +11,15 @@ metadata:
     haproxy-ingress.github.io/cors-max-age: "86400"
     haproxy-ingress.github.io/timeout-server: "600s"
     haproxy-ingress.github.io/timeout-tunnel: "3600s"
+    haproxy-ingress.github.io/redirect-from: "wetlands-v2.nrp-nautilus.io"
 spec:
   ingressClassName: haproxy
   tls:
     - hosts:
+        - wetlands.nrp-nautilus.io
         - wetlands-v2.nrp-nautilus.io
   rules:
-    - host: wetlands-v2.nrp-nautilus.io
+    - host: wetlands.nrp-nautilus.io
       http:
         paths:
           - path: /
