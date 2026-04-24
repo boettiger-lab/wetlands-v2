@@ -20,7 +20,8 @@
     },
     "collections": [
         {
-            "collection_id": "wetlands-global-unified",
+            "collection_id": "wetlands-glwd-v2",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/glwd/stac-collection.json",
             "group": "Wetlands",
             "assets": [
                 {
@@ -28,7 +29,14 @@
                     "display_name": "Global Wetlands (GLWD v2)",
                     "visible": true,
                     "legend_type": "categorical"
-                },
+                }
+            ]
+        },
+        {
+            "collection_id": "wetlands-ramsar",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/ramsar/stac-collection.json",
+            "group": "Wetlands",
+            "assets": [
                 {
                     "id": "ramsar-pmtiles",
                     "display_name": "Ramsar Sites",
