@@ -8,6 +8,11 @@
         "zoom": 3,
         "globe": true
     },
+    "links": {
+        "github": "https://github.com/boettiger-lab/wetlands-v2",
+        "docs": "https://boettiger-lab.github.io/geo-agent/",
+        "carbon": true
+    },
     "welcome": {
         "message": "Hi! I can help you explore global wetlands data and control the map. Try asking:",
         "examples": [
@@ -129,9 +134,96 @@
             ]
         },
         {
-            "collection_id": "overture-divisions",
-            "group": "Reference",
-            "assets": []
+            "collection_id": "overture-divisions-countries-2026-02-18",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/countries/stac-collection.json",
+            "group": { "name": "Administrative Boundaries", "collapsed": true },
+            "assets": [
+                {
+                    "id": "countries-pmtiles",
+                    "display_name": "Countries",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#6A1B9A",
+                        "fill-opacity": 0.03
+                    },
+                    "outline_style": {
+                        "line-color": "#6A1B9A",
+                        "line-width": 1.2,
+                        "line-opacity": 0.7
+                    }
+                }
+            ]
+        },
+        {
+            "collection_id": "overture-divisions-regions-2026-02-18",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/regions/stac-collection.json",
+            "group": { "name": "Administrative Boundaries", "collapsed": true },
+            "assets": [
+                {
+                    "id": "regions-pmtiles",
+                    "display_name": "Regions / States",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#6A1B9A",
+                        "fill-opacity": 0.03
+                    },
+                    "outline_style": {
+                        "line-color": "#6A1B9A",
+                        "line-width": 0.8,
+                        "line-opacity": 0.6
+                    }
+                }
+            ]
+        },
+        {
+            "collection_id": "overture-divisions-counties-2026-02-18",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/counties/stac-collection.json",
+            "group": { "name": "Administrative Boundaries", "collapsed": true },
+            "assets": [
+                {
+                    "id": "counties-pmtiles",
+                    "display_name": "Counties",
+                    "visible": false,
+                    "default_style": {
+                        "fill-color": "#6A1B9A",
+                        "fill-opacity": 0.03
+                    },
+                    "outline_style": {
+                        "line-color": "#6A1B9A",
+                        "line-width": 0.4,
+                        "line-opacity": 0.5
+                    }
+                }
+            ]
+        },
+        {
+            "collection_id": "cgls-lc100-2019",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-land-cover/cgls-lc100-2019/stac-collection.json",
+            "group": "Land Cover",
+            "assets": [
+                {
+                    "id": "cgls-lc100-2019-cog",
+                    "display_name": "Global Land Cover (CGLS-LC100, 2019)",
+                    "visible": false,
+                    "legend_type": "categorical"
+                }
+            ]
+        },
+        {
+            "collection_id": "ghs-pop-2020",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-high-seas/ghs-pop-2020/stac-collection.json",
+            "group": "Population",
+            "assets": [
+                {
+                    "id": "ghs-pop-2020-cog",
+                    "display_name": "Global Population Density (GHS-POP 2020)",
+                    "visible": false,
+                    "colormap": "magma",
+                    "rescale": "0,200",
+                    "nodata": 0,
+                    "legend_label": "people per 90m cell"
+                }
+            ]
         },
         {
             "collection_id": "inaturalist-ranges",
