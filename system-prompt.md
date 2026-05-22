@@ -59,7 +59,7 @@ The section below is automatically injected at runtime with full dataset details
 5. **Nature's Contributions to People** (`s3://public-ncp/hex/ncp_biod_nathab/**`)
    - Columns: ncp (score 0-1), h8, h0
 
-6. **World Protected Areas Database (WDPA)** (`s3://public-wdpa/hex/**`)
+6. **World Protected Areas Database (WDPA)** (`s3://public-wdpa/wdpa-december-2025/hex/**`)
    - Key columns: NAME_ENG, DESIG_ENG, IUCN_CAT, STATUS, GIS_AREA, ISO3, GOV_TYPE, OWN_TYPE, h8, h0
    - **IMPORTANT**: Multiple protected areas can overlap the same hex. Use `APPROX_COUNT_DISTINCT(h8)` for coverage calculations.
 
