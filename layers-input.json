@@ -56,6 +56,7 @@
         },
         {
             "collection_id": "irrecoverable-carbon",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-carbon/stac-collection.json",
             "group": "Environment",
             "assets": [
                 {
@@ -68,6 +69,7 @@
         },
         {
             "collection_id": "ncp-biodiversity",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-ncp/stac-collection.json",
             "group": "Environment",
             "assets": [
                 {
@@ -81,8 +83,8 @@
             ]
         },
         {
-            "collection_id": "wdpa-december-2025",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-wdpa/wdpa-december-2025/stac-collection.json",
+            "collection_id": "wdpa",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-wdpa/wdpa/stac-collection.json",
             "group": "Protected Areas",
             "assets": [
                 {
@@ -108,6 +110,7 @@
         },
         {
             "collection_id": "hydrobasins-v1c",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-hydrobasins/stac-collection.json",
             "group": "Hydrology",
             "assets": [
                 {
@@ -212,7 +215,7 @@
         },
         {
             "collection_id": "ghs-pop-2020",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-high-seas/ghs-pop-2020/stac-collection.json",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-population/ghs-pop-2020/stac-collection.json",
             "group": "Population",
             "assets": [
                 {
@@ -228,6 +231,7 @@
         },
         {
             "collection_id": "inaturalist-ranges",
+            "collection_url": "https://s3-west.nrp-nautilus.io/public-inat/stac-collection.json",
             "group": "Biodiversity",
             "assets": []
         }
