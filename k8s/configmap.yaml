@@ -4,11 +4,10 @@
 # below), which injects the Authorization header server-side via
 # `proxy_set_header`. The browser only sees a relative `/api/llm`
 # endpoint and never holds the key.
-#
-# See ../../geo-agent-ops/SECRETS_EXPOSURE.md for the migration plan.
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: biodiversity
   name: wetlands-v2-config
 data:
   config.template.json: |
@@ -55,6 +54,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  namespace: biodiversity
   name: wetlands-v2-nginx
 data:
   nginx.conf.template: |
