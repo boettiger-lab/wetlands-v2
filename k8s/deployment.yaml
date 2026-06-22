@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: biodiversity
   name: wetlands-v2
   labels:
     app: wetlands-v2
