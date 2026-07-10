@@ -3,3 +3,6 @@ config.json
 *.secret
 node_modules/
 .DS_Store
+
+# Claude Code local/agent state
+.claude/
