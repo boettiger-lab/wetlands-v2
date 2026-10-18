@@ -15,7 +15,7 @@ first cut for discussion.
 This directory holds only the app's domain: `index.html`, `app.css`, `config/app.json`, one
 theme per pillar plus the Ramsar overview, the SQL, and precomputed `data/`. The machinery
 comes from [glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html`
-(v0.2.3, the first with the slider, per-level boundary tiles and app.json overlays).
+(v0.2.4: v0.2.3 added the slider, per-level boundary tiles and app.json overlays, v0.2.4 overlays drawn above the boundaries).
 Do not write JavaScript here: features go into glen-charts.
 
 ## Units
@@ -107,7 +107,10 @@ on the Montreux Record. Ramsar does not enter any pillar score.
 In the leaderboard, **All basins** ranks everything; **Basins with Ramsar sites** keeps basins
 holding any part of a site and recomputes percentiles among them. The **Ramsar share** column
 sorts, so high-scoring basins with no Ramsar site are easy to find. Ramsar polygons are also a
-map layer, off by default (*Show Ramsar sites*).
+map layer, off by default (*Show Ramsar sites*), drawn in pink above the basin colours.
+
+The leaderboard map colours basins by overall score in viridis deciles among the basins in
+view, so the top 10% are bright yellow.
 
 Protected area (Coexistence) includes Ramsar sites listed in the WDPA.
 
@@ -125,7 +128,7 @@ same MCP `query` call. Precompute itself is the stock glen-charts CLI:
 ```bash
 python3 scripts/local-mcp.py &     # 127.0.0.1:18765; needs ~20 GB RAM and many cores
 export MCP_URL=http://127.0.0.1:18765/mcp MCP_TIMEOUT_MS=1800000
-G=github:SchmidtDSE/glen-charts#v0.2.3
+G=github:SchmidtDSE/glen-charts#v0.2.4
 npx $G precompute --site explorer lists   --param level=all
 npx $G precompute --site explorer results --param level=all
 npx $G precompute --site explorer sources

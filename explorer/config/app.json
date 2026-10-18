@@ -118,12 +118,18 @@
         "map": {
             "label": "Overall score",
             "ramp": [
-                "#f0f921",
-                "#fca636",
-                "#e16462",
-                "#b12a90",
-                "#6a00a8"
-            ]
+                "#440154",
+                "#482878",
+                "#3e4989",
+                "#31688e",
+                "#26828e",
+                "#1f9e89",
+                "#35b779",
+                "#6ece58",
+                "#b5de2b",
+                "#fde725"
+            ],
+            "note": "Viridis deciles among the basins in view: yellow is the top 10%"
         },
         "default": true,
         "profile_tab": "Basin details"
@@ -135,8 +141,9 @@
             "source_layer": "ramsar",
             "type": "fill",
             "paint": {
-                "fill-color": "#FF1493",
-                "fill-opacity": 0.45
+                "fill-color": "#ff1493",
+                "fill-opacity": 0.85,
+                "fill-outline-color": "#ffffff"
             },
             "toggle": "Show Ramsar sites",
             "popup_title": "Site name",
@@ -147,7 +154,8 @@
                     "Area (ha)"
                 ]
             ],
-            "visible": false
+            "visible": false,
+            "above": true
         }
     ]
 }
