@@ -36,7 +36,7 @@
         {
             "query": "ramsar",
             "field": "montreux_sites",
-            "label": "On the Montreux Record",
+            "label": "Montreux Record sites",
             "format": "int",
             "note": "Sites where ecological change has occurred or is likely"
         }
@@ -45,7 +45,7 @@
         {
             "query": "ramsar",
             "title": "Ramsar sites in this basin",
-            "subtitle": "Area of each site inside the basin",
+            "subtitle": "Bars show the area of each site inside this basin.",
             "category": "site",
             "format": "km2",
             "series": [
