@@ -83,6 +83,22 @@ The git push does **not** update running pods — step 3 does. Skipping `generat
 
 For private data modules (rclone sidecar, oauth2-proxy, private parquet credentials): [docs/guide/private-deployment](https://boettiger-lab.github.io/geo-agent/docs/guide/private-deployment)
 
+### Basin explorer — `explorer/` (glen-charts)
+
+A second, no-LLM app at `/explorer/`: per-basin pillar scores (Biodiversity, Carbon,
+Resilience, Coexistence) for HydroBASINS levels 3–6, with Ramsar sites for comparison. It is
+built on [glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in
+`explorer/index.html`, and is config, SQL and precomputed data only. See `explorer/README.md`.
+
+- Edit only `explorer/config/themes/<t>/<t>-all.sql`; `bash scripts/build-explorer-sql.sh`
+  writes the per-basin `<t>.sql` from it.
+- The all-basins queries are too heavy for the shared MCP server's 300 s limit. Precompute
+  runs the stock glen-charts CLI against `scripts/local-mcp.py`, a local DuckDB that answers
+  the same MCP `query` call (commands in `explorer/README.md`). Commit `explorer/data/`.
+- The pod's init container copies `explorer/` with the rest, so the usual push-then-restart
+  deploys it. Changes to `k8s/configmap.yaml` (nginx) need `kubectl apply` first.
+- Use only publicly redistributable layers: this repo and app are public.
+
 ### CDN versioning
 
 `index.html` pins the geo-agent library version:

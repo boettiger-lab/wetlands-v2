@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wetland Basin Explorer</title>
+    <script src="https://unpkg.com/maplibre-gl@5.22.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@5.22.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/pmtiles@3.0.7/dist/pmtiles.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.3/core/style.css">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <header id="app-header">
+        <div class="app-header-brand"><h1 class="app-header-title">Wetland Basin Explorer</h1></div>
+        <div class="app-header-end">
+            <nav class="app-header-nav">
+                <a class="app-header-link" href="../">Map &amp; chat</a>
+                <a class="app-header-link" href="https://github.com/boettiger-lab/wetlands-v2/tree/main/explorer" target="_blank" rel="noopener">Methods &amp; code</a>
+            </nav>
+        </div>
+    </header>
+    <main id="glen"></main>
+    <script type="module">
+        import { createExplorer } from 'https://cdn.jsdelivr.net/gh/SchmidtDSE/glen-charts@v0.2.3/core/explorer.js';
+        createExplorer();
+    </script>
+</body>
+</html>

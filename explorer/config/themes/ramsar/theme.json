@@ -1,0 +1,62 @@
+{
+    "label": "Ramsar sites",
+    "color": "#d1495b",
+    "blurb": "The Ramsar Sites of International Importance in this basin, for comparison with its scores.",
+    "queries": {
+        "ramsar": {
+            "file": "ramsar.sql",
+            "all": "ramsar-all.sql"
+        }
+    },
+    "headlines": [
+        {
+            "query": "ramsar",
+            "field": "ramsar_share",
+            "label": "Basin area in Ramsar sites",
+            "format": "pct",
+            "detail_field": "ramsar_list",
+            "detail_template": "{}",
+            "detail_format": "text",
+            "note": "Every basin is ranked, with or without a Ramsar site"
+        },
+        {
+            "query": "ramsar",
+            "field": "ramsar_wetland_share",
+            "label": "Basin wetland in Ramsar sites",
+            "format": "pct",
+            "note": "Share of GLWD wetland area"
+        },
+        {
+            "query": "ramsar",
+            "field": "ramsar_sites",
+            "label": "Ramsar sites",
+            "format": "int",
+            "note": "Sites with any part in this basin"
+        },
+        {
+            "query": "ramsar",
+            "field": "montreux_sites",
+            "label": "On the Montreux Record",
+            "format": "int",
+            "note": "Sites where ecological change has occurred or is likely"
+        }
+    ],
+    "charts": [
+        {
+            "query": "ramsar",
+            "title": "Ramsar sites in this basin",
+            "subtitle": "Area of each site inside the basin",
+            "category": "site",
+            "format": "km2",
+            "series": [
+                {
+                    "field": "area_km2",
+                    "label": "Area in basin",
+                    "color": "#d1495b"
+                }
+            ],
+            "label_lines": 2
+        }
+    ],
+    "method": "Ramsar Sites of International Importance (Ramsar Sites Information Service, 2,551 sites) as H3 res-8 cells, joined to the basin's res-6 cells. A site's area in the basin is the area of its distinct res-8 cells there (points-only sites are a single small cell); a site that spans basins counts in each. The Ramsar share is the share of the basin's area in any site; the wetland share is the share of its GLWD wetland area (classes 8–32) in any site. The Montreux Record lists sites where a change in ecological character has occurred, is occurring or is likely. Ramsar sites are shown for comparison only: they do not enter any pillar score, and the leaderboard ranks every basin unless 'Basins with Ramsar sites' is chosen."
+}

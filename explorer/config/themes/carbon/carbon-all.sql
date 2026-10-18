@@ -1,0 +1,129 @@
+-- Carbon pillar, every HydroBASINS basin at one level.
+-- Conservation International v2 (2025) carbon, 2024: three nested pools,
+-- manageable ⊃ vulnerable ⊃ irrecoverable. Each res-8 cell's carbon is weighted by the share
+-- of the cell that is natural wetland (GLWD v2 classes 8-32), so the wetland figures count
+-- only carbon in wetlands. The whole-basin irrecoverable total is kept for comparison.
+-- One row per (id, variable). pct = mid-rank percentile (0-100) among all basins with data,
+-- higher = more carbon. pillar_score = mean pct of the two irrecoverable-in-wetland
+-- variables (PROVISIONAL); the other three are comparisons, left out of the score.
+-- Unit = a HydroBASINS v1c basin at level {{LEVEL}} (3-6), as H3 res-6 cells (~36 km²).
+-- Level-6 basins are polyfilled by cell centre (multipolygons split into parts first, so
+-- islands count); each coarser basin is the union of its level-6 basins, matched by
+-- Pfafstetter code (a level-n code is the first n digits of its level-6 codes) within the same
+-- HydroBASINS region (the first digit of HYBAS_ID: code 353, Chukotka, is split at the
+-- antimeridian into regions 3 and 8). Each res-6 cell belongs to one basin. About 1% of
+-- level-6 basins, all smaller than one cell, get none.
+WITH cells6 AS MATERIALIZED (
+  SELECT DISTINCT PFAF_ID AS pfaf6, HYBAS_ID // 1000000000 AS region,
+         UNNEST(h3_polygon_wkt_to_cells_experimental(ST_AsText(geom), 6, 'center'))::UBIGINT AS h6
+  FROM (SELECT PFAF_ID, HYBAS_ID, UNNEST(ST_Dump(geometry), recursive := true)
+        FROM read_parquet('s3://public-hydrobasins/level_06.parquet'))
+),
+basins AS MATERIALIZED (
+  SELECT l.HYBAS_ID AS id, c.h6, h3_cell_to_parent(c.h6, 0)::BIGINT AS h0, h3_cell_area(c.h6, 'km^2') AS a
+  FROM cells6 c
+  JOIN read_parquet('s3://public-hydrobasins/level_0{{LEVEL}}.parquet') l
+    ON l.PFAF_ID = c.pfaf6 // CAST(POW(10, 6 - {{LEVEL}}) AS INTEGER)
+   AND l.HYBAS_ID // 1000000000 = c.region
+),
+units AS (SELECT id, SUM(a) AS area_km2 FROM basins GROUP BY id),
+-- Natural wetland area per res-8 cell: GLWD v2 classes 8-32 (lacustrine, riverine, palustrine,
+-- ephemeral, peatland and coastal wetlands). Open water (1-7) and rice paddies (33) are left out.
+wet8 AS MATERIALIZED (
+  SELECT w.h0, w.h8, ANY_VALUE(w.h6) AS h6, SUM(w.area_ha_x10) / 1000.0 AS km2
+  FROM read_parquet('s3://public-wetlands/glwd/class-area-hex/Z=*/h0=*/data_0.parquet') w
+  WHERE w.Z BETWEEN 8 AND 32
+  GROUP BY w.h0, w.h8
+),
+-- Wetland share of each res-8 cell, capped at 1.
+wetf AS MATERIALIZED (
+  SELECT h0, h8, h6, km2, LEAST(km2 / h3_cell_area(h8, 'km^2'), 1) AS f FROM wet8 WHERE km2 > 0
+),
+-- Irrecoverable carbon 2024 in wetlands per res-6 cell: each res-9 cell's carbon (Mg C)
+-- times the wetland share of its res-8 cell.
+irr6 AS (
+  SELECT w.h0, w.h6, SUM(c.carbon * w.f) AS mg
+  FROM read_parquet('s3://public-carbon/irrecoverable-carbon-2024/hex/h0=*/data_0.parquet') c
+  JOIN wetf w ON c.h0 = w.h0 AND c.h8 = w.h8
+  WHERE NOT isnan(c.carbon)
+  GROUP BY w.h0, w.h6
+),
+-- Vulnerable carbon 2024 in wetlands per res-6 cell: each res-9 cell's carbon (Mg C)
+-- times the wetland share of its res-8 cell.
+vul6 AS (
+  SELECT w.h0, w.h6, SUM(c.carbon * w.f) AS mg
+  FROM read_parquet('s3://public-carbon/vulnerable-carbon-2024/hex/h0=*/data_0.parquet') c
+  JOIN wetf w ON c.h0 = w.h0 AND c.h8 = w.h8
+  WHERE NOT isnan(c.carbon)
+  GROUP BY w.h0, w.h6
+),
+-- Manageable carbon 2024 in wetlands per res-6 cell: each res-9 cell's carbon (Mg C)
+-- times the wetland share of its res-8 cell.
+man6 AS (
+  SELECT w.h0, w.h6, SUM(c.carbon * w.f) AS mg
+  FROM read_parquet('s3://public-carbon/manageable-carbon-2024/hex/h0=*/data_0.parquet') c
+  JOIN wetf w ON c.h0 = w.h0 AND c.h8 = w.h8
+  WHERE NOT isnan(c.carbon)
+  GROUP BY w.h0, w.h6
+),
+wet6 AS (SELECT h0, h6, SUM(km2) AS km2 FROM wetf GROUP BY h0, h6),
+-- Irrecoverable carbon over the whole basin, every land cover.
+irr_basin AS (
+  SELECT b.id, SUM(c.carbon) AS mg
+  FROM read_parquet('s3://public-carbon/irrecoverable-carbon-2024/hex/h0=*/data_0.parquet') c
+  JOIN basins b ON c.h0 = b.h0 AND c.h6 = b.h6
+  WHERE NOT isnan(c.carbon)
+  GROUP BY b.id
+),
+byunit AS (
+  SELECT b.id, SUM(w.km2) AS wet_km2, SUM(i.mg) AS irr, SUM(v.mg) AS vul, SUM(m.mg) AS man
+  FROM basins b
+  JOIN wet6 w ON w.h0 = b.h0 AND w.h6 = b.h6
+  LEFT JOIN irr6 i ON i.h0 = b.h0 AND i.h6 = b.h6
+  LEFT JOIN vul6 v ON v.h0 = b.h0 AND v.h6 = b.h6
+  LEFT JOIN man6 m ON m.h0 = b.h0 AND m.h6 = b.h6
+  GROUP BY b.id
+),
+vals AS (
+  SELECT u.id, 'irrecoverable_wetland_mt' AS variable, 'Irrecoverable carbon in wetlands' AS label,
+         COALESCE(x.irr, 0) / 1e6 AS value, 'Mt C' AS unit, 'num2' AS fmt, 'log' AS scale, 1 AS dir
+  FROM units u LEFT JOIN byunit x USING (id)
+  UNION ALL
+  -- t C per hectare of wetland; no value where the basin has no mapped wetland
+  SELECT u.id, 'irrecoverable_wetland_density', 'Irrecoverable carbon per hectare of wetland',
+         CASE WHEN x.wet_km2 > 0 THEN x.irr / (x.wet_km2 * 100) END, 't C/ha', 'num1', 'linear', 1
+  FROM units u LEFT JOIN byunit x USING (id)
+  UNION ALL
+  SELECT u.id, 'vulnerable_wetland_mt', 'Vulnerable carbon in wetlands (comparison)',
+         COALESCE(x.vul, 0) / 1e6, 'Mt C', 'num2', 'log', 1
+  FROM units u LEFT JOIN byunit x USING (id)
+  UNION ALL
+  SELECT u.id, 'manageable_wetland_mt', 'Manageable carbon in wetlands (comparison)',
+         COALESCE(x.man, 0) / 1e6, 'Mt C', 'num2', 'log', 1
+  FROM units u LEFT JOIN byunit x USING (id)
+  UNION ALL
+  SELECT u.id, 'irrecoverable_basin_mt', 'Irrecoverable carbon, whole basin (comparison)',
+         COALESCE(ib.mg, 0) / 1e6, 'Mt C', 'num2', 'log', 1
+  FROM units u LEFT JOIN irr_basin ib USING (id)
+),
+-- Score: mid-rank percentile, 0-100, among units with data. Tied values share
+-- the midpoint of their rank range (plain PERCENT_RANK would put every tie at
+-- the bottom of the range, e.g. every basin with no protected wetland).
+ranked AS (
+  SELECT *, CASE WHEN value IS NULL THEN NULL
+                 ELSE ROUND(100 * ((RANK() OVER w - 1) + (COUNT(*) OVER w - 1)) / 2.0
+                            / NULLIF(COUNT(*) OVER (PARTITION BY variable, value IS NULL) - 1, 0), 1)
+            END AS pct
+  FROM vals
+  WINDOW w AS (PARTITION BY variable, value IS NULL ORDER BY dir * value)
+)
+-- value is kept to 4 significant figures, which keeps the level-6 files small
+SELECT id, variable, label,
+       CASE WHEN value IS NULL OR value = 0 THEN value
+            ELSE ROUND(value, 3 - CAST(FLOOR(LOG10(ABS(value))) AS INTEGER)) END AS value,
+       unit, fmt, scale, dir, pct,
+       -- the comparison variables are left out of the pillar score
+       ROUND(AVG(pct) FILTER (WHERE variable IN ('irrecoverable_wetland_mt', 'irrecoverable_wetland_density'))
+             OVER (PARTITION BY id), 1) AS pillar_score
+FROM ranked
+ORDER BY id, variable
