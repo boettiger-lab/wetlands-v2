@@ -69,7 +69,7 @@
     "leaderboard": {
         "jurisdiction": "basin",
         "tab": "Leaderboard",
-        "title": "Basins, ranked",
+        "title": "Ranks by basin",
         "intro": "<p>Every basin at this level ranked by its overall score. Click a name to see it on the map, or a basin on the map to find its row. Switch to <em>Basins with Ramsar sites</em> to rank only those, or sort by <em>Ramsar share</em> to find high-scoring basins with no Ramsar site. Adjust the scoring below to see how the ranking changes.</p>",
         "pillars": [
             {

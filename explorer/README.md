@@ -69,11 +69,11 @@ for a measured absence. Values are kept to four significant figures.
 | | Irrecoverable carbon per hectare of wetland | more carbon |
 | | Vulnerable carbon in wetlands (comparison; off by default) | more carbon |
 | | Manageable carbon in wetlands (comparison; off by default) | more carbon |
-| | Irrecoverable carbon, whole basin (comparison; off by default) | more carbon |
+| | Irrecoverable carbon in the whole basin (comparison; off by default) | more carbon |
 | Resilience | Human modification of wetlands (gHM, wetland-weighted) | less modified |
-| | Projected intactness 2050 (GLOBIO MSA, SSP5-8.5) | more intact |
-| | Projected warming, 2041–2070 (CHELSA, SSP3-7.0) | less warming |
-| | Projected change in dry-season rainfall, 2041–2070 | less drying |
+| | Projected intactness 2050 (GLOBIO MSA SSP5-8.5) | more intact |
+| | Projected warming by 2041–2070 (CHELSA SSP3-7.0) | less warming |
+| | Projected change in dry-season rainfall by 2041–2070 | less drying |
 | Coexistence | Wetland area protected or conserved (WDPA + OECM) | more protected |
 | | Nature's contributions to people, mean count | more |
 | | Population density 2020 (GHS-POP) | fewer people |

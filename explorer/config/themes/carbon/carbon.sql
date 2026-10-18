@@ -107,7 +107,7 @@ vals AS (
          COALESCE(x.man, 0) / 1e6, 'Mt C', 'num2', 'log', 1
   FROM units u LEFT JOIN byunit x USING (id)
   UNION ALL
-  SELECT u.id, 'irrecoverable_basin_mt', 'Irrecoverable carbon, whole basin (comparison)',
+  SELECT u.id, 'irrecoverable_basin_mt', 'Irrecoverable carbon in the whole basin (comparison)',
          COALESCE(ib.mg, 0) / 1e6, 'Mt C', 'num2', 'log', 1
   FROM units u LEFT JOIN irr_basin ib USING (id)
 ),
