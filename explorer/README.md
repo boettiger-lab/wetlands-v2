@@ -15,8 +15,7 @@ first cut for discussion.
 This directory holds only the app's domain: `index.html`, `app.css`, `config/app.json`, one
 theme per pillar plus the Ramsar overview, the SQL, and precomputed `data/`. The machinery
 comes from [glen-charts](https://github.com/SchmidtDSE/glen-charts), pinned in `index.html`
-(currently a commit of [SchmidtDSE/glen-charts#5](https://github.com/SchmidtDSE/glen-charts/pull/5), which adds the slider,
-per-level boundary tiles and app.json overlays; switch to the release tag once it is out).
+(v0.2.3, the first with the slider, per-level boundary tiles and app.json overlays).
 Do not write JavaScript here: features go into glen-charts.
 
 ## Units
@@ -126,7 +125,7 @@ same MCP `query` call. Precompute itself is the stock glen-charts CLI:
 ```bash
 python3 scripts/local-mcp.py &     # 127.0.0.1:18765; needs ~20 GB RAM and many cores
 export MCP_URL=http://127.0.0.1:18765/mcp MCP_TIMEOUT_MS=1800000
-G=github:SchmidtDSE/glen-charts#<tag in index.html>
+G=github:SchmidtDSE/glen-charts#v0.2.3
 npx $G precompute --site explorer lists   --param level=all
 npx $G precompute --site explorer results --param level=all
 npx $G precompute --site explorer sources
