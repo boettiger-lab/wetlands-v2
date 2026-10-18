@@ -1,0 +1,57 @@
+{
+    "label": "Resilience",
+    "color": "#5b8fd6",
+    "blurb": "Condition and exposure: how modified the basin's wetlands are, projected intactness in 2050, and projected warming and dry-season drying.",
+    "queries": {
+        "resilience": {
+            "file": "resilience.sql",
+            "all": "resilience-all.sql"
+        }
+    },
+    "headlines": [
+        {
+            "query": "resilience",
+            "row": {
+                "variable": "human_modification_wetlands"
+            },
+            "field": "pillar_score",
+            "label": "Resilience score (provisional)",
+            "format": "num1",
+            "note": "Mean of this pillar's variable percentiles among basins at this level, 0–100"
+        }
+    ],
+    "charts": [
+        {
+            "query": "resilience",
+            "title": "Percentile by variable",
+            "subtitle": "Where this basin ranks among all basins at this level (0–100, higher = better for the pillar)",
+            "category": "label",
+            "format": "num1",
+            "domain_max": 100,
+            "series": [
+                {
+                    "field": "pct",
+                    "label": "Percentile",
+                    "color": "#5b8fd6"
+                }
+            ],
+            "label_lines": 2
+        },
+        {
+            "type": "percentile-strip",
+            "title": "Against every basin at this level",
+            "subtitle": "Each variable's value here, marked on the spread of all basins",
+            "query": "resilience",
+            "key": "variable",
+            "label": "label",
+            "value": "value",
+            "format_field": "fmt",
+            "rank_field": "pct",
+            "scale_field": "scale",
+            "peer_label": "basins",
+            "note": "Provisional scores",
+            "wide": true
+        }
+    ],
+    "method": "Human modification is the mean of gHM (~2016, 0–1) over the basin's wetland, weighting each res-8 cell by its wetland area; more modification ranks lower, and a basin with no mapped wetland has no value. Projected intactness is GLOBIO 4 mean species abundance for 2050 under SSP5-RCP8.5, area-weighted over the basin; more intact ranks higher. Climate exposure compares CHELSA 2.1 for 2041–2070 under SSP3-7.0 (median of five models) with 1981–2010: warming is the change in annual mean temperature (more warming ranks lower), and dry-season rainfall is the relative change in precipitation of the driest quarter (drier ranks lower), both area-weighted over the basin. Basins with no dry-season rainfall in the baseline have no value for the second. Basins are HydroBASINS v1c polygons as H3 res-6 cells (~36 km²): level-6 basins are filled by cell centre and coarser levels are unions of level-6 basins by Pfafstetter code. Wetland is GLWD v2 classes 8–32 (lacustrine, riverine, palustrine, ephemeral, peatland and coastal wetlands); open water and rice paddies are left out. Scores are mid-rank percentiles (0–100) among the basins at the chosen level, with direction applied so higher is better for the pillar; tied values share the midpoint of their rank range. The pillar score is the plain mean of the variable percentiles. All of this is provisional: which variables belong to which pillar, and how they are weighted, has not been decided."
+}

@@ -1,0 +1,84 @@
+-- Ramsar sites, every HydroBASINS basin at one level.
+-- One row per (id, Ramsar site in the basin); a basin with no site gets one row with
+-- site = 'No Ramsar site'. area_km2 = the area of the site's res-8 cells inside the basin
+-- (distinct cells; a site split across basins counts in each). Basin-level fields repeat on
+-- each row: ramsar_sites (count), ramsar_share (share of basin area in any Ramsar site),
+-- ramsar_wetland_share (share of the basin's GLWD wetland inside Ramsar sites), ramsar_list.
+-- Unit = a HydroBASINS v1c basin at level {{LEVEL}} (3-6), as H3 res-6 cells (~36 km²).
+-- Level-6 basins are polyfilled by cell centre (multipolygons split into parts first, so
+-- islands count); each coarser basin is the union of its level-6 basins, matched by
+-- Pfafstetter code (a level-n code is the first n digits of its level-6 codes) within the same
+-- HydroBASINS region (the first digit of HYBAS_ID: code 353, Chukotka, is split at the
+-- antimeridian into regions 3 and 8). Each res-6 cell belongs to one basin. About 1% of
+-- level-6 basins, all smaller than one cell, get none.
+WITH cells6 AS MATERIALIZED (
+  SELECT DISTINCT PFAF_ID AS pfaf6, HYBAS_ID // 1000000000 AS region,
+         UNNEST(h3_polygon_wkt_to_cells_experimental(ST_AsText(geom), 6, 'center'))::UBIGINT AS h6
+  FROM (SELECT PFAF_ID, HYBAS_ID, UNNEST(ST_Dump(geometry), recursive := true)
+        FROM read_parquet('s3://public-hydrobasins/level_06.parquet'))
+),
+basins AS MATERIALIZED (
+  SELECT l.HYBAS_ID AS id, c.h6, h3_cell_to_parent(c.h6, 0)::BIGINT AS h0, h3_cell_area(c.h6, 'km^2') AS a
+  FROM cells6 c
+  JOIN read_parquet('s3://public-hydrobasins/level_0{{LEVEL}}.parquet') l
+    ON l.PFAF_ID = c.pfaf6 // CAST(POW(10, 6 - {{LEVEL}}) AS INTEGER)
+   AND l.HYBAS_ID // 1000000000 = c.region
+),
+units AS (SELECT id, SUM(a) AS area_km2 FROM basins GROUP BY id),
+-- Natural wetland area per res-8 cell: GLWD v2 classes 8-32 (lacustrine, riverine, palustrine,
+-- ephemeral, peatland and coastal wetlands). Open water (1-7) and rice paddies (33) are left out.
+wet8 AS MATERIALIZED (
+  SELECT w.h0, w.h8, ANY_VALUE(w.h6) AS h6, SUM(w.area_ha_x10) / 1000.0 AS km2
+  FROM read_parquet('s3://public-wetlands/glwd/class-area-hex/Z=*/h0=*/data_0.parquet') w
+  WHERE w.Z BETWEEN 8 AND 32
+  GROUP BY w.h0, w.h8
+),
+ram8 AS MATERIALIZED (
+  SELECT DISTINCT r.h0, r.h8, h3_cell_to_parent(r.h8, 6) AS h6, r.ramsarid, r."Site name" AS site,
+         r.Country AS country, r."Montreux listed" AS montreux
+  FROM read_parquet('s3://public-wetlands/ramsar/hex/h0=*/data_0.parquet') r
+),
+cells AS (
+  SELECT b.id, r.h8, r.ramsarid, r.site, r.country, r.montreux, h3_cell_area(r.h8, 'km^2') AS a
+  FROM ram8 r JOIN basins b ON b.h0 = r.h0 AND b.h6 = r.h6
+),
+by_site AS (
+  SELECT id, ramsarid, ANY_VALUE(site) AS site, ANY_VALUE(country) AS country,
+         BOOL_OR(COALESCE(montreux, false)) AS montreux, SUM(a) AS area_km2
+  FROM (SELECT DISTINCT id, h8, ramsarid, site, country, montreux, a FROM cells)
+  GROUP BY id, ramsarid
+),
+cover AS (SELECT id, SUM(a) AS km2 FROM (SELECT DISTINCT id, h8, a FROM cells) GROUP BY id),
+wet_in AS (
+  SELECT b.id, SUM(w.km2) AS km2,
+         SUM(w.km2) FILTER (WHERE w.h8 IN (SELECT h8 FROM ram8)) AS in_km2
+  FROM wet8 w JOIN basins b ON b.h0 = w.h0 AND b.h6 = w.h6
+  GROUP BY b.id
+),
+basin AS (
+  SELECT u.id, COALESCE(c.km2, 0) / u.area_km2 AS ramsar_share,
+         CASE WHEN w.km2 > 0 THEN COALESCE(w.in_km2, 0) / w.km2 END AS ramsar_wetland_share
+  FROM units u LEFT JOIN cover c USING (id) LEFT JOIN wet_in w USING (id)
+),
+rows AS (
+  SELECT u.id, COALESCE(s.site, 'No Ramsar site') AS site, s.country, s.ramsarid,
+         COALESCE(s.montreux, false) AS montreux, COALESCE(s.area_km2, 0) AS area_km2
+  FROM units u LEFT JOIN by_site s USING (id)
+)
+SELECT r.id, r.site, r.country, r.ramsarid, r.montreux, ROUND(r.area_km2, 2) AS area_km2,
+       COUNT(r.ramsarid) OVER (PARTITION BY r.id) AS ramsar_sites,
+       COUNT(r.ramsarid) FILTER (WHERE r.montreux) OVER (PARTITION BY r.id) AS montreux_sites,
+       -- shares to 4 significant figures: a points-only site can be a millionth of a basin
+       CASE WHEN b.ramsar_share > 0 THEN ROUND(b.ramsar_share, 3 - CAST(FLOOR(LOG10(b.ramsar_share)) AS INTEGER))
+            ELSE b.ramsar_share END AS ramsar_share,
+       CASE WHEN b.ramsar_wetland_share > 0
+            THEN ROUND(b.ramsar_wetland_share, 3 - CAST(FLOOR(LOG10(b.ramsar_wetland_share)) AS INTEGER))
+            ELSE b.ramsar_wetland_share END AS ramsar_wetland_share,
+       -- the five largest sites in the basin, then a count of the rest
+       COALESCE(array_to_string(list_slice(LIST(r.site ORDER BY r.area_km2 DESC) FILTER (WHERE r.ramsarid IS NOT NULL)
+                                  OVER (PARTITION BY r.id), 1, 5), '; ')
+         || CASE WHEN COUNT(r.ramsarid) OVER (PARTITION BY r.id) > 5
+                 THEN ' and ' || (COUNT(r.ramsarid) OVER (PARTITION BY r.id) - 5) || ' more' ELSE '' END,
+       '') AS ramsar_list
+FROM rows r JOIN basin b USING (id)
+ORDER BY r.id, r.area_km2 DESC

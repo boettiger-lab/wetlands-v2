@@ -1,0 +1,57 @@
+{
+    "label": "Carbon",
+    "color": "#c08a4f",
+    "blurb": "Irrecoverable carbon held in the basin's wetlands, in total and per hectare; vulnerable and manageable carbon are shown for comparison.",
+    "queries": {
+        "carbon": {
+            "file": "carbon.sql",
+            "all": "carbon-all.sql"
+        }
+    },
+    "headlines": [
+        {
+            "query": "carbon",
+            "row": {
+                "variable": "irrecoverable_wetland_mt"
+            },
+            "field": "pillar_score",
+            "label": "Carbon score (provisional)",
+            "format": "num1",
+            "note": "Mean of the two irrecoverable-carbon variables' percentiles among basins at this level, 0–100"
+        }
+    ],
+    "charts": [
+        {
+            "query": "carbon",
+            "title": "Percentile by variable",
+            "subtitle": "Where this basin ranks among all basins at this level (0–100, higher = better for the pillar)",
+            "category": "label",
+            "format": "num1",
+            "domain_max": 100,
+            "series": [
+                {
+                    "field": "pct",
+                    "label": "Percentile",
+                    "color": "#c08a4f"
+                }
+            ],
+            "label_lines": 2
+        },
+        {
+            "type": "percentile-strip",
+            "title": "Against every basin at this level",
+            "subtitle": "Each variable's value here, marked on the spread of all basins",
+            "query": "carbon",
+            "key": "variable",
+            "label": "label",
+            "value": "value",
+            "format_field": "fmt",
+            "rank_field": "pct",
+            "scale_field": "scale",
+            "peer_label": "basins",
+            "note": "Provisional scores",
+            "wide": true
+        }
+    ],
+    "method": "Carbon is Conservation International's v2 (2025) update of Noon et al. (2022), for 2024. Its three pools are nested: manageable carbon (stocks that human land use can affect) contains vulnerable carbon (what a typical conversion would release), which contains irrecoverable carbon (what, once released, could not be recovered by 2050). Each res-8 cell's carbon is weighted by the share of the cell that is wetland, so these are carbon in wetlands only. The score uses irrecoverable carbon in wetlands, as a total and per hectare of wetland (the wetland-weighted mean density, which favours peat-rich basins of any size). Vulnerable and manageable carbon in wetlands, and irrecoverable carbon over the whole basin and every land cover, are shown for comparison and left out of the score; each can be switched on in the leaderboard. The source rasters are ~300 m, so carbon within a cell is not separated between wetland and dry land: a cell that is 40% wetland contributes 40% of its carbon. Licence CC BY-NC 4.0. Basins are HydroBASINS v1c polygons as H3 res-6 cells (~36 km²): level-6 basins are filled by cell centre and coarser levels are unions of level-6 basins by Pfafstetter code. Wetland is GLWD v2 classes 8–32 (lacustrine, riverine, palustrine, ephemeral, peatland and coastal wetlands); open water and rice paddies are left out. Scores are mid-rank percentiles (0–100) among the basins at the chosen level, with direction applied so higher is better for the pillar; tied values share the midpoint of their rank range. The pillar score is the plain mean of the variable percentiles. All of this is provisional: which variables belong to which pillar, and how they are weighted, has not been decided."
+}

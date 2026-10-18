@@ -1,0 +1,57 @@
+{
+    "label": "Biodiversity",
+    "color": "#4caf6a",
+    "blurb": "How much wetland the basin holds, and how rich it is in threatened and freshwater-dependent species.",
+    "queries": {
+        "biodiversity": {
+            "file": "biodiversity.sql",
+            "all": "biodiversity-all.sql"
+        }
+    },
+    "headlines": [
+        {
+            "query": "biodiversity",
+            "row": {
+                "variable": "wetland_km2"
+            },
+            "field": "pillar_score",
+            "label": "Biodiversity score (provisional)",
+            "format": "num1",
+            "note": "Mean of this pillar's variable percentiles among basins at this level, 0–100"
+        }
+    ],
+    "charts": [
+        {
+            "query": "biodiversity",
+            "title": "Percentile by variable",
+            "subtitle": "Where this basin ranks among all basins at this level (0–100, higher = better for the pillar)",
+            "category": "label",
+            "format": "num1",
+            "domain_max": 100,
+            "series": [
+                {
+                    "field": "pct",
+                    "label": "Percentile",
+                    "color": "#4caf6a"
+                }
+            ],
+            "label_lines": 2
+        },
+        {
+            "type": "percentile-strip",
+            "title": "Against every basin at this level",
+            "subtitle": "Each variable's value here, marked on the spread of all basins",
+            "query": "biodiversity",
+            "key": "variable",
+            "label": "label",
+            "value": "value",
+            "format_field": "fmt",
+            "rank_field": "pct",
+            "scale_field": "scale",
+            "peer_label": "basins",
+            "note": "Provisional scores",
+            "wide": true
+        }
+    ],
+    "method": "Wetland area is the sum of GLWD v2 per-class area for classes 8–32 over the basin; wetland share divides it by the basin's area. Threatened species richness is the area-weighted mean of the IUCN Red List 2025 count of Vulnerable, Endangered and Critically Endangered species (amphibians, birds, mammals, reptiles, freshwater fish), on IUCN's ~10 km grid (H3 res 5). Amphibian species richness is the same for all amphibians: a freshwater-dependent group with complete global assessment, used in place of freshwater fish, whose IUCN coverage is still uneven between regions. A basin with no amphibian range scores 0. Wetland area is a total, so larger basins tend to rank higher on it; wetland share is the size-free counterpart. Basins are HydroBASINS v1c polygons as H3 res-6 cells (~36 km²): level-6 basins are filled by cell centre and coarser levels are unions of level-6 basins by Pfafstetter code. Wetland is GLWD v2 classes 8–32 (lacustrine, riverine, palustrine, ephemeral, peatland and coastal wetlands); open water and rice paddies are left out. Scores are mid-rank percentiles (0–100) among the basins at the chosen level, with direction applied so higher is better for the pillar; tied values share the midpoint of their rank range. The pillar score is the plain mean of the variable percentiles. All of this is provisional: which variables belong to which pillar, and how they are weighted, has not been decided."
+}

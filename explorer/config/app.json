@@ -1,0 +1,153 @@
+{
+    "title": "Wetland Basin Explorer",
+    "engine": "mcp",
+    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "view": {
+        "center": [
+            10,
+            20
+        ],
+        "zoom": 1.6
+    },
+    "overview": "ramsar",
+    "themes": [
+        "biodiversity",
+        "carbon",
+        "resilience",
+        "coexistence"
+    ],
+    "params": [
+        {
+            "id": "level",
+            "label": "Basin size (HydroBASINS level)",
+            "token": "LEVEL",
+            "control": "slider",
+            "options": [
+                3,
+                4,
+                5,
+                6
+            ],
+            "default": 4,
+            "help": "Larger basins on the left, smaller on the right: about 290, 1,340, 4,730 and 16,200 basins.",
+            "format": "Level {}"
+        }
+    ],
+    "jurisdictions": [
+        {
+            "id": "basin",
+            "label": "Basins",
+            "peer_label": "basins at this level",
+            "singular": "Basin",
+            "description": "HydroBASINS v1c watersheds at Pfafstetter levels 3 to 6, from major river basins to sub-catchments",
+            "aoi": "SELECT HYBAS_ID FROM read_parquet('s3://public-hydrobasins/level_0{{LEVEL}}.parquet') WHERE HYBAS_ID = {{ID}}",
+            "list": "WITH cells6 AS MATERIALIZED (SELECT DISTINCT PFAF_ID AS pfaf6, HYBAS_ID // 1000000000 AS region, UNNEST(h3_polygon_wkt_to_cells_experimental(ST_AsText(geom), 6, 'center'))::UBIGINT AS h6 FROM (SELECT PFAF_ID, HYBAS_ID, UNNEST(ST_Dump(geometry), recursive := true) FROM read_parquet('s3://public-hydrobasins/level_06.parquet'))), basins AS MATERIALIZED (SELECT l.HYBAS_ID AS id, l.PFAF_ID AS pfaf, c.h6, h3_cell_area(c.h6, 'km^2') AS a FROM cells6 c JOIN read_parquet('s3://public-hydrobasins/level_0{{LEVEL}}.parquet') l ON l.PFAF_ID = c.pfaf6 // CAST(POW(10, 6 - {{LEVEL}}) AS INTEGER) AND l.HYBAS_ID // 1000000000 = c.region), ctry AS (SELECT c.h8, ANY_VALUE(c.name) AS cname FROM read_parquet('s3://public-overturemaps/hex/countries.parquet') c SEMI JOIN (SELECT h3_cell_to_center_child(h6, 8) AS h8 FROM basins) k ON c.h8 = k.h8 GROUP BY c.h8), bc AS (SELECT b.id, t.cname, SUM(b.a) AS km2 FROM basins b JOIN ctry t ON t.h8 = h3_cell_to_center_child(b.h6, 8) GROUP BY ALL), bn AS (SELECT id, STRING_AGG(cname, ', ' ORDER BY km2 DESC) FILTER (WHERE rk <= 3 AND share >= 0.05) AS countries FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY id ORDER BY km2 DESC) AS rk, km2 / SUM(km2) OVER (PARTITION BY id) AS share FROM bc) GROUP BY id), p AS (SELECT id, pfaf, h3_cell_to_lng(h6) AS x, h3_cell_to_lat(h6) AS y FROM basins), g AS (SELECT id, ANY_VALUE(pfaf) AS pfaf, MIN(x) AS ax0, MAX(x) AS ax1, MIN((x + 360) % 360) AS sx0, MAX((x + 360) % 360) AS sx1, MIN(y) - 0.2 AS ymin, MAX(y) + 0.2 AS ymax FROM p GROUP BY id) SELECT g.id, 'Basin ' || g.pfaf || CASE WHEN COUNT(*) OVER (PARTITION BY g.pfaf) > 1 THEN '-' || (g.id // 1000000000) ELSE '' END || COALESCE(' (' || bn.countries || ')', '') AS name, CASE WHEN sx1 - sx0 < ax1 - ax0 THEN (CASE WHEN sx0 > 180 THEN sx0 - 360 ELSE sx0 END) ELSE ax0 END - 0.2 AS xmin, ymin, CASE WHEN sx1 - sx0 < ax1 - ax0 THEN (CASE WHEN sx1 > 180 THEN sx1 - 360 ELSE sx1 END) ELSE ax1 END + 0.2 AS xmax, ymax FROM g LEFT JOIN bn USING (id) ORDER BY name",
+            "boundary": {
+                "url": "https://s3-west.nrp-nautilus.io/public-hydrobasins/level_0{{LEVEL}}/hydrobasins_level_0{{LEVEL}}.pmtiles",
+                "source_layer": "hydrobasins_level_0{{LEVEL}}",
+                "id_prop": "HYBAS_ID",
+                "name_prop": "PFAF_ID",
+                "style": {
+                    "selected_width": 2.2,
+                    "selected": "#d1495b",
+                    "line": "#1565C0",
+                    "line_opacity": 0.45
+                }
+            },
+            "list_params": true,
+            "picker": "map"
+        }
+    ],
+    "format": {
+        "nodata": "no data"
+    },
+    "labels": {
+        "sections": "Pillars",
+        "place_hint": "Click a basin on the map"
+    },
+    "intro": "<p>Click a basin on the map, and use the slider to choose how large the basins are. Each pillar shows the basin's variables and where it ranks among all basins at that level. Ramsar sites are shown for comparison: every basin is ranked, whether or not it holds a Ramsar site.</p><p class=\"tile-note\"><strong>Provisional.</strong> Which variables belong to each pillar, and how they are scored, has not been decided. Scores are mid-rank percentiles (0–100, higher is better for the pillar); a pillar score is the mean of its variables' percentiles.</p><p class=\"tile-note\">Units: HydroBASINS v1c (Lehner &amp; Grill 2013, WWF HydroSHEDS). Wetlands: GLWD v2 (Lehner et al. 2025).</p>",
+    "leaderboard": {
+        "jurisdiction": "basin",
+        "tab": "Leaderboard",
+        "title": "Basins, ranked",
+        "intro": "<p>Every basin at this level ranked by its overall score. Click a name to see it on the map, or a basin on the map to find its row. Switch to <em>Basins with Ramsar sites</em> to rank only those, or sort by <em>Ramsar share</em> to find high-scoring basins with no Ramsar site. Adjust the scoring below to see how the ranking changes.</p>",
+        "pillars": [
+            {
+                "theme": "biodiversity",
+                "query": "biodiversity"
+            },
+            {
+                "theme": "carbon",
+                "query": "carbon",
+                "variables": {
+                    "vulnerable_wetland_mt": {
+                        "weight": 0
+                    },
+                    "manageable_wetland_mt": {
+                        "weight": 0
+                    },
+                    "irrecoverable_basin_mt": {
+                        "weight": 0
+                    }
+                }
+            },
+            {
+                "theme": "resilience",
+                "query": "resilience"
+            },
+            {
+                "theme": "coexistence",
+                "query": "coexistence"
+            }
+        ],
+        "overall": {
+            "label": "Overall",
+            "note": "Overall: weighted mean of the pillar scores. A pillar score is the weighted mean of its variables' percentiles (0–100, higher is better for the pillar), computed among the basins in view."
+        },
+        "scope": {
+            "theme": "ramsar",
+            "query": "ramsar",
+            "field": "ramsar_share",
+            "min": 1e-06,
+            "detail_field": "ramsar_list",
+            "label": "Basins with Ramsar sites",
+            "global_label": "All basins",
+            "note": "Basins with Ramsar sites: basins that hold any part of a Ramsar Site. Percentiles are recomputed among those basins only.",
+            "column": "Ramsar share"
+        },
+        "map": {
+            "label": "Overall score",
+            "ramp": [
+                "#f0f921",
+                "#fca636",
+                "#e16462",
+                "#b12a90",
+                "#6a00a8"
+            ]
+        },
+        "default": true,
+        "profile_tab": "Basin details"
+    },
+    "overlays": [
+        {
+            "id": "ramsar",
+            "url": "https://s3-west.nrp-nautilus.io/public-wetlands/ramsar/ramsar_wetlands.pmtiles",
+            "source_layer": "ramsar",
+            "type": "fill",
+            "paint": {
+                "fill-color": "#FF1493",
+                "fill-opacity": 0.45
+            },
+            "toggle": "Show Ramsar sites",
+            "popup_title": "Site name",
+            "popup_fields": [
+                "Country",
+                [
+                    "Area (ha)",
+                    "Area (ha)"
+                ]
+            ],
+            "visible": false
+        }
+    ]
+}

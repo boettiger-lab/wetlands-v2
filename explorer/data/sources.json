@@ -1,0 +1,607 @@
+{
+ "generated": "2026-10-18T02:52:50.143Z",
+ "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+ "datasets": [
+  {
+   "id": "hydrobasins-v1c",
+   "prefixes": [
+    "s3://public-hydrobasins/level_06.parquet"
+   ],
+   "stac": {
+    "id": "hydrobasins-v1c",
+    "title": "HydroBasins Global Watershed Boundaries v1c",
+    "license": "proprietary",
+    "providers": [
+     {
+      "name": "HydroSHEDS",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://www.hydrosheds.org/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-hydrobasins/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.hydrosheds.org/page/data-availability",
+      "title": "HydroSHEDS Data Terms"
+     }
+    ]
+   }
+  },
+  {
+   "id": "wetlands-ramsar",
+   "prefixes": [
+    "https://s3-west.nrp-nautilus.io/public-wetlands/ramsar/ramsar_wetlands.pmtiles",
+    "s3://public-wetlands/ramsar/hex"
+   ],
+   "stac": {
+    "id": "wetlands-ramsar",
+    "title": "Ramsar Sites of International Importance",
+    "license": "public-domain",
+    "providers": [
+     {
+      "name": "Ramsar Convention Secretariat",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://rsis.ramsar.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-wetlands/ramsar/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://rsis.ramsar.org/",
+      "type": "text/html",
+      "title": "Ramsar Sites Information Service"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.ramsar.org/",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "wetlands-glwd-v2",
+   "prefixes": [
+    "s3://public-wetlands/glwd/class-area-hex"
+   ],
+   "stac": {
+    "id": "wetlands-glwd-v2",
+    "title": "Global Lakes and Wetlands Database v2.0",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "HydroSHEDS / McGill University",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://www.hydrosheds.org/products/glwd"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-wetlands/glwd/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.5194/essd-17-2277-2025",
+      "type": "text/html",
+      "title": "Lehner et al. (2025) — GLWD v2.0, Earth System Science Data"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.hydrosheds.org/products/glwd",
+      "type": "text/html",
+      "title": "GLWD official product page (HydroSHEDS)"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "iucn-richness-2025",
+   "prefixes": [
+    "s3://public-iucn/hex/combined_thr_sr",
+    "s3://public-iucn/hex/amphibians_sr"
+   ],
+   "stac": {
+    "id": "iucn-richness-2025",
+    "title": "IUCN Species Richness 2025",
+    "license": "proprietary",
+    "providers": [
+     {
+      "name": "IUCN Red List",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://www.iucnredlist.org/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-iucn/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.iucnredlist.org/terms/terms-of-use",
+      "title": "IUCN Red List Terms of Use"
+     }
+    ]
+   }
+  },
+  {
+   "id": "irrecoverable-carbon",
+   "prefixes": [
+    "s3://public-carbon/irrecoverable-carbon-2024/hex",
+    "s3://public-carbon/vulnerable-carbon-2024/hex",
+    "s3://public-carbon/manageable-carbon-2024/hex"
+   ],
+   "stac": {
+    "id": "irrecoverable-carbon",
+    "title": "Irrecoverable Earth: Carbon Reserves (v2, 2025 release)",
+    "license": "CC-BY-NC-4.0",
+    "providers": [
+     {
+      "name": "Conservation International",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://www.conservation.org/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-carbon/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.conservation.org/irrecoverable-carbon",
+      "title": "Conservation International - Irrecoverable Carbon Project"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/s41893-021-00803-6",
+      "title": "Noon et al. (2022) Nature Sustainability"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by-nc/4.0/",
+      "title": "Creative Commons Attribution-NonCommercial 4.0 International"
+     }
+    ]
+   }
+  },
+  {
+   "id": "global-human-modification",
+   "prefixes": [
+    "s3://public-human-modification/ghm/hex"
+   ],
+   "stac": {
+    "id": "global-human-modification",
+    "title": "Global Human Modification (gHM)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "David M. Theobald et al.",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://doi.org/10.6084/m9.figshare.7283087"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-human-modification/"
+     }
+    ],
+    "sci:doi": "10.6084/m9.figshare.7283087",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-human-modification/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html",
+      "title": "CC BY 4.0"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.6084/m9.figshare.7283087"
+     }
+    ]
+   }
+  },
+  {
+   "id": "globio-msa-ssp5rcp85-2050-overall",
+   "prefixes": [
+    "s3://public-globio/globio-msa-ssp5rcp85-2050-overall/hex"
+   ],
+   "stac": {
+    "id": "globio-msa-ssp5rcp85-2050-overall",
+    "title": "GLOBIO 4 Overall MSA - 2050 SSP5xRCP8.5 (Fossil-fuelled)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "PBL Netherlands Environmental Assessment Agency",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.globio.info"
+     },
+     {
+      "name": "Boettiger Lab / NRP",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-globio/globio-msa-ssp5rcp85-2050-overall/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "chelsa-2-1-baseline-1981-2010",
+   "prefixes": [
+    "s3://public-bioclimate/chelsa-2-1/baseline-1981-2010/hex"
+   ],
+   "stac": {
+    "id": "chelsa-2-1-baseline-1981-2010",
+    "title": "CHELSA 2.1 Bioclimate — observed baseline, 1981-2010 (global land)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "CHELSA (Swiss Federal Institute for Forest, Snow and Landscape Research WSL)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://chelsa-climate.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-bioclimate/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-bioclimate/chelsa-2-1/baseline-1981-2010/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://chelsa-climate.org/terms-of-use/",
+      "type": "text/html",
+      "title": "CHELSA terms of use (CC0 1.0)"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/sdata.2017.122",
+      "type": "text/html",
+      "title": "Karger et al. 2017, Climatologies at high resolution for the earth's land surface areas"
+     }
+    ]
+   }
+  },
+  {
+   "id": "chelsa-2-1-ssp370-2041-2070",
+   "prefixes": [
+    "s3://public-bioclimate/chelsa-2-1/ssp370-2041-2070/hex"
+   ],
+   "stac": {
+    "id": "chelsa-2-1-ssp370-2041-2070",
+    "title": "CHELSA 2.1 Future Bioclimate — SSP3-7.0, 2041-2070 (global land)",
+    "license": "CC0-1.0",
+    "providers": [
+     {
+      "name": "CHELSA (Swiss Federal Institute for Forest, Snow and Landscape Research WSL)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://chelsa-climate.org/"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://s3-west.nrp-nautilus.io/public-bioclimate/"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-bioclimate/chelsa-2-1/ssp370-2041-2070/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://chelsa-climate.org/terms-of-use/",
+      "type": "text/html",
+      "title": "CHELSA terms of use (CC0 1.0)"
+     },
+     {
+      "rel": "cite-as",
+      "href": "https://doi.org/10.1038/sdata.2017.122",
+      "type": "text/html",
+      "title": "Karger et al. 2017, Climatologies at high resolution for the earth's land surface areas"
+     }
+    ]
+   }
+  },
+  {
+   "id": "wdpa",
+   "prefixes": [
+    "s3://public-wdpa/wdpa/hex"
+   ],
+   "stac": {
+    "id": "wdpa",
+    "title": "World Database on Protected Areas (WDPA)",
+    "license": "proprietary",
+    "providers": [
+     {
+      "name": "UNEP-WCMC and IUCN",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.protectedplanet.net/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-wdpa/wdpa/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "href": "https://www.protectedplanet.net/en/thematic-areas/wdpa",
+      "title": "Protected Planet — WDPA"
+     },
+     {
+      "rel": "license",
+      "href": "https://www.protectedplanet.net/en/legal",
+      "title": "WDPA Terms and Conditions"
+     }
+    ]
+   }
+  },
+  {
+   "id": "wdoecm-may-2026",
+   "prefixes": [
+    "s3://public-wdpa/wdoecm-may-2026/hex"
+   ],
+   "stac": {
+    "id": "wdoecm-may-2026",
+    "title": "World Database on OECMs (WD-OECM) — May 2026",
+    "license": "other",
+    "providers": [
+     {
+      "name": "UN Environment Programme World Conservation Monitoring Centre (UNEP-WCMC)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.unep-wcmc.org/"
+     },
+     {
+      "name": "International Union for Conservation of Nature (IUCN)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://www.iucn.org/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-wdpa/wdoecm-may-2026/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "about",
+      "title": "Protected Planet — OECMs",
+      "href": "https://www.protectedplanet.net/en/thematic-areas/oecms",
+      "type": "text/html"
+     },
+     {
+      "rel": "license",
+      "title": "Protected Planet Terms and Conditions",
+      "href": "https://www.protectedplanet.net/en/legal",
+      "type": "text/html"
+     },
+     {
+      "rel": "cite-as",
+      "title": "UNEP-WCMC and IUCN (2026) Protected Planet: WD-OECM",
+      "href": "https://www.protectedplanet.net/en/thematic-areas/oecms",
+      "type": "text/html"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ncp-biodiversity",
+   "prefixes": [
+    "s3://public-ncp/hex/ncp_only"
+   ],
+   "stac": {
+    "id": "ncp-biodiversity",
+    "title": "Nature's Contributions to People (NCP) - Biodiversity Indicators",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "Natural Capital Project",
+      "roles": [
+       "producer"
+      ],
+      "url": "https://naturalcapitalproject.stanford.edu/"
+     },
+     {
+      "name": "Boettiger Lab",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://github.com/boettiger-lab"
+     }
+    ],
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-ncp/stac-collection.json",
+      "type": "application/json"
+     },
+     {
+      "rel": "license",
+      "href": "https://creativecommons.org/licenses/by/4.0/",
+      "title": "Creative Commons Attribution 4.0 International"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ghs-pop-2020",
+   "prefixes": [
+    "s3://public-population/ghs-pop-2020/hex"
+   ],
+   "stac": {
+    "id": "ghs-pop-2020",
+    "title": "GHS-POP 2020 Global Population (R2023A, 3 arc-second)",
+    "license": "CC-BY-4.0",
+    "providers": [
+     {
+      "name": "European Commission Joint Research Centre (JRC)",
+      "roles": [
+       "producer",
+       "licensor"
+      ],
+      "url": "https://human-settlement.emergency.copernicus.eu"
+     },
+     {
+      "name": "Boettiger Lab, UC Berkeley",
+      "roles": [
+       "processor",
+       "host"
+      ],
+      "url": "https://boettiger-lab.github.io"
+     }
+    ],
+    "sci:citation": "Schiavina M., Freire S., Carioli A., MacManus K. (2023): GHS-POP R2023A - GHS population grid multitemporal (1975-2030). European Commission, Joint Research Centre (JRC). doi:10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE",
+    "links": [
+     {
+      "rel": "self",
+      "href": "https://s3-west.nrp-nautilus.io/public-population/ghs-pop-2020/stac-collection.json",
+      "type": "application/json"
+     }
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,57 @@
+{
+    "label": "Coexistence",
+    "color": "#e3893a",
+    "blurb": "People and nature together: how much of the basin's wetland is protected or conserved, the benefits nature provides to people, and population pressure.",
+    "queries": {
+        "coexistence": {
+            "file": "coexistence.sql",
+            "all": "coexistence-all.sql"
+        }
+    },
+    "headlines": [
+        {
+            "query": "coexistence",
+            "row": {
+                "variable": "protected_wetland_share"
+            },
+            "field": "pillar_score",
+            "label": "Coexistence score (provisional)",
+            "format": "num1",
+            "note": "Mean of this pillar's variable percentiles among basins at this level, 0–100"
+        }
+    ],
+    "charts": [
+        {
+            "query": "coexistence",
+            "title": "Percentile by variable",
+            "subtitle": "Where this basin ranks among all basins at this level (0–100, higher = better for the pillar)",
+            "category": "label",
+            "format": "num1",
+            "domain_max": 100,
+            "series": [
+                {
+                    "field": "pct",
+                    "label": "Percentile",
+                    "color": "#e3893a"
+                }
+            ],
+            "label_lines": 2
+        },
+        {
+            "type": "percentile-strip",
+            "title": "Against every basin at this level",
+            "subtitle": "Each variable's value here, marked on the spread of all basins",
+            "query": "coexistence",
+            "key": "variable",
+            "label": "label",
+            "value": "value",
+            "format_field": "fmt",
+            "rank_field": "pct",
+            "scale_field": "scale",
+            "peer_label": "basins",
+            "note": "Provisional scores",
+            "wide": true
+        }
+    ],
+    "method": "Protected or conserved share is the share of the basin's wetland area in res-8 cells inside any WDPA protected area (excluding 'Proposed') or WD-OECM other effective conservation measure (May 2026); distinct cells, since areas overlap. This is designated, not effective, protection, and it includes Ramsar Sites that are listed in the WDPA. Nature's contributions to people is the area-weighted mean count of contributions a location ranks highly for in Chaplin-Kramer et al. (2019), 0–19; it counts as a benefit, so higher ranks higher. Population density is GHS-POP 2020 over the basin area; more people per km² ranks lower. Whether population should count as pressure is a team decision. Basins are HydroBASINS v1c polygons as H3 res-6 cells (~36 km²): level-6 basins are filled by cell centre and coarser levels are unions of level-6 basins by Pfafstetter code. Wetland is GLWD v2 classes 8–32 (lacustrine, riverine, palustrine, ephemeral, peatland and coastal wetlands); open water and rice paddies are left out. Scores are mid-rank percentiles (0–100) among the basins at the chosen level, with direction applied so higher is better for the pillar; tied values share the midpoint of their rank range. The pillar score is the plain mean of the variable percentiles. All of this is provisional: which variables belong to which pillar, and how they are weighted, has not been decided."
+}
