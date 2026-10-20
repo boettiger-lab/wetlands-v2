@@ -15,7 +15,7 @@
                 "variable": "protected_wetland_share"
             },
             "field": "pillar_score",
-            "label": "Coexistence score (provisional)",
+            "label": "Provisional coexistence score",
             "format": "num1",
             "note": "Mean of this pillar's variable percentiles among basins at this level, 0–100"
         }

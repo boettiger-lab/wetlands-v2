@@ -19,7 +19,7 @@
     "params": [
         {
             "id": "level",
-            "label": "Basin size (HydroBASINS level)",
+            "label": "Basin size",
             "token": "LEVEL",
             "control": "slider",
             "options": [
@@ -29,7 +29,7 @@
                 6
             ],
             "default": 4,
-            "help": "Larger basins on the left, smaller on the right: about 290, 1,340, 4,730 and 16,200 basins.",
+            "help": "Basins are HydroBASINS levels 3 to 6. Larger basins are on the left and smaller ones on the right, from about 290 to 16,200 basins.",
             "format": "Level {}"
         }
     ],

@@ -15,7 +15,7 @@
                 "variable": "irrecoverable_wetland_mt"
             },
             "field": "pillar_score",
-            "label": "Carbon score (provisional)",
+            "label": "Provisional carbon score",
             "format": "num1",
             "note": "Mean of the two irrecoverable-carbon variables' percentiles among basins at this level, 0–100"
         }
@@ -24,7 +24,7 @@
         {
             "query": "carbon",
             "title": "Percentile by variable",
-            "subtitle": "Percentiles run from 0 to 100 among all basins at this level, and higher is better for the pillar.",
+            "subtitle": "Percentiles run from 0 to 100 among all basins at this level, and higher is better for the pillar. The score uses the two irrecoverable-carbon variables; the others are shown for comparison.",
             "category": "label",
             "format": "num1",
             "domain_max": 100,

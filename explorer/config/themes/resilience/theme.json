@@ -15,7 +15,7 @@
                 "variable": "human_modification_wetlands"
             },
             "field": "pillar_score",
-            "label": "Resilience score (provisional)",
+            "label": "Provisional resilience score",
             "format": "num1",
             "note": "Mean of this pillar's variable percentiles among basins at this level, 0–100"
         }
