@@ -57,7 +57,7 @@ amph AS (
   GROUP BY b.id
 ),
 vals AS (
-  SELECT u.id, 'wetland_km2' AS variable, 'Wetland area (GLWD v2 classes 8–32)' AS label,
+  SELECT u.id, 'wetland_km2' AS variable, 'Wetland area' AS label,
          COALESCE(wet.km2, 0) AS value, 'km²' AS unit, 'km2' AS fmt, 'log' AS scale, 1 AS dir
   FROM units u LEFT JOIN wet USING (id)
   UNION ALL
@@ -65,11 +65,11 @@ vals AS (
          COALESCE(wet.km2, 0) / u.area_km2, 'share', 'pct', 'linear', 1
   FROM units u LEFT JOIN wet USING (id)
   UNION ALL
-  SELECT u.id, 'threatened_richness', 'Threatened species richness (mean)',
+  SELECT u.id, 'threatened_richness', 'Mean threatened species richness',
          thr.v, 'species', 'num1', 'linear', 1
   FROM units u LEFT JOIN thr USING (id)
   UNION ALL
-  SELECT u.id, 'amphibian_richness', 'Amphibian species richness (mean)',
+  SELECT u.id, 'amphibian_richness', 'Mean amphibian species richness',
          COALESCE(amph.v, 0), 'species', 'num1', 'linear', 1
   FROM units u LEFT JOIN amph USING (id)
 ),

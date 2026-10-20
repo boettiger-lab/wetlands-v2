@@ -15,7 +15,7 @@
                 "variable": "wetland_km2"
             },
             "field": "pillar_score",
-            "label": "Biodiversity score (provisional)",
+            "label": "Provisional biodiversity score",
             "format": "num1",
             "note": "Mean of this pillar's variable percentiles among basins at this level, 0–100"
         }

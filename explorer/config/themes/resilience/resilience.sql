@@ -81,15 +81,15 @@ clim AS (
   GROUP BY b.id
 ),
 vals AS (
-  SELECT u.id, 'human_modification_wetlands' AS variable, 'Human modification of wetlands (gHM)' AS label,
+  SELECT u.id, 'human_modification_wetlands' AS variable, 'Human modification of wetlands' AS label,
          ghm.v AS value, 'index 0–1' AS unit, 'num2' AS fmt, 'linear' AS scale, -1 AS dir
   FROM units u LEFT JOIN ghm USING (id)
   UNION ALL
-  SELECT u.id, 'msa_2050', 'Projected intactness 2050 (MSA SSP5-8.5)',
+  SELECT u.id, 'msa_2050', 'Projected intactness in 2050',
          msa.v, 'index 0–1', 'num2', 'linear', 1
   FROM units u LEFT JOIN msa USING (id)
   UNION ALL
-  SELECT u.id, 'warming_2055', 'Projected warming by 2041–2070 (SSP3-7.0)',
+  SELECT u.id, 'warming_2055', 'Projected warming by 2041–2070',
          clim.warming, '°C', 'num1', 'linear', -1
   FROM units u LEFT JOIN clim USING (id)
   UNION ALL

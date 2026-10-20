@@ -75,11 +75,11 @@ pop AS (
   GROUP BY b.id
 ),
 vals AS (
-  SELECT u.id, 'protected_wetland_share' AS variable, 'Wetland area protected or conserved (WDPA + OECM)' AS label,
+  SELECT u.id, 'protected_wetland_share' AS variable, 'Share of wetland protected or conserved' AS label,
          pa.v AS value, 'share' AS unit, 'pct' AS fmt, 'linear' AS scale, 1 AS dir
   FROM units u LEFT JOIN pa USING (id)
   UNION ALL
-  SELECT u.id, 'ncp_benefits', 'Nature''s contributions to people (NCP, mean count)',
+  SELECT u.id, 'ncp_benefits', 'Nature''s contributions to people',
          ncp.v, 'contributions', 'num1', 'linear', 1
   FROM units u LEFT JOIN ncp USING (id)
   UNION ALL

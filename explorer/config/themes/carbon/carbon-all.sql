@@ -94,15 +94,15 @@ vals AS (
          CASE WHEN x.wet_km2 > 0 THEN x.irr / (x.wet_km2 * 100) END, 't C/ha', 'num1', 'linear', 1
   FROM units u LEFT JOIN byunit x USING (id)
   UNION ALL
-  SELECT u.id, 'vulnerable_wetland_mt', 'Vulnerable carbon in wetlands (comparison)',
+  SELECT u.id, 'vulnerable_wetland_mt', 'Vulnerable carbon in wetlands',
          COALESCE(x.vul, 0) / 1e6, 'Mt C', 'num2', 'log', 1
   FROM units u LEFT JOIN byunit x USING (id)
   UNION ALL
-  SELECT u.id, 'manageable_wetland_mt', 'Manageable carbon in wetlands (comparison)',
+  SELECT u.id, 'manageable_wetland_mt', 'Manageable carbon in wetlands',
          COALESCE(x.man, 0) / 1e6, 'Mt C', 'num2', 'log', 1
   FROM units u LEFT JOIN byunit x USING (id)
   UNION ALL
-  SELECT u.id, 'irrecoverable_basin_mt', 'Irrecoverable carbon in the whole basin (comparison)',
+  SELECT u.id, 'irrecoverable_basin_mt', 'Irrecoverable carbon in the whole basin',
          COALESCE(ib.mg, 0) / 1e6, 'Mt C', 'num2', 'log', 1
   FROM units u LEFT JOIN irr_basin ib USING (id)
 ),
