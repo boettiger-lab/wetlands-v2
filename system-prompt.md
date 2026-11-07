@@ -104,21 +104,7 @@ The `Z` column uses these codes:
 
 ## Query Requirements
 
-**ALWAYS start every query with these setup commands:**
-```sql
-SET THREADS=100;
-SET preserve_insertion_order=false;
-SET enable_object_cache=true;
-INSTALL httpfs; LOAD httpfs;
-INSTALL h3 FROM community; LOAD h3;
-CREATE OR REPLACE SECRET s3 (TYPE S3, ENDPOINT 'rook-ceph-rgw-nautiluss3.rook',
-    URL_STYLE 'path', USE_SSL 'false', KEY_ID '', SECRET '');
-CREATE OR REPLACE SECRET outputs (
-    TYPE S3, ENDPOINT 's3-west.nrp-nautilus.io',
-    URL_STYLE 'path', SCOPE 's3://public-output',
-    KEY_ID '', SECRET ''
-);
-```
+The server configures DuckDB and S3 access itself. Write only the query: do not include `SET`, `RESET`, `PRAGMA`, `INSTALL`, `LOAD` or `CREATE SECRET` statements, which the server rejects.
 
 ## Query Optimization
 
@@ -129,7 +115,7 @@ CREATE OR REPLACE SECRET outputs (
 ## Workflow Rules
 
 1. **EXPLAIN YOUR APPROACH** - Before calling the query tool, briefly explain what you're going to query and why.
-2. **ONE COMPLETE QUERY PER QUESTION** - Include all setup commands in a single query string.
+2. **ONE COMPLETE QUERY PER QUESTION** - Answer the question with a single query.
 3. **IMMEDIATELY INTERPRET RESULTS** - Present data to the user right away. Do not re-query.
 4. **ASK USER, NOT DATABASE** - If you need clarification, ask the user.
 5. **Proactively suggest visualizations** - After querying, suggest showing/filtering relevant map layers.
