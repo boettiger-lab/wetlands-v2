@@ -1,7 +1,7 @@
 {
     "title": "Wetland Basin Explorer",
     "engine": "mcp",
-    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+    "mcp_url": "https://wetlands.nrp-nautilus.io/api/mcp",
     "view": {
         "center": [
             10,
