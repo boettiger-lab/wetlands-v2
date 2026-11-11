@@ -36,8 +36,7 @@
                 {
                     "id": "glwd-main-class-cog",
                     "display_name": "Global Wetlands (GLWD v2)",
-                    "visible": true,
-                    "legend_type": "categorical"
+                    "visible": true
                 }
             ]
         },
@@ -62,8 +61,7 @@
                 {
                     "id": "v2-vulnerable-2024-cog",
                     "display_name": "Vulnerable Carbon (2024)",
-                    "visible": false,
-                    "colormap": "reds"
+                    "visible": false
                 }
             ]
         },
@@ -159,8 +157,7 @@
                 {
                     "id": "cgls-lc100-2019-cog",
                     "display_name": "Global Land Cover (CGLS-LC100, 2019)",
-                    "visible": false,
-                    "legend_type": "categorical"
+                    "visible": false
                 }
             ]
         },
@@ -173,9 +170,6 @@
                     "id": "ghs-pop-2020-cog",
                     "display_name": "Global Population Density (GHS-POP 2020)",
                     "visible": false,
-                    "colormap": "magma",
-                    "rescale": "0,200",
-                    "nodata": 0,
                     "legend_label": "people per 90m cell"
                 }
             ]
