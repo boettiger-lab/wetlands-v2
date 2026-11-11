@@ -50,10 +50,6 @@
                     "id": "ramsar-pmtiles",
                     "display_name": "Ramsar Sites",
                     "visible": true,
-                    "default_style": {
-                        "fill-color": "#FF1493",
-                        "fill-opacity": 0.5
-                    },
                     "tooltip_fields": ["Site name", "Country", "Area (ha)", "Wetland Type"]
                 }
             ]
@@ -95,19 +91,6 @@
                     "id": "wdpa-pmtiles",
                     "display_name": "Protected Areas (WDPA)",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": ["match", ["get", "IUCN_CAT"],
-                            "Ia", "#26633A",
-                            "Ib", "#26633A",
-                            "II", "#3E9C47",
-                            "III", "#7EB3D3",
-                            "IV", "#7EB3D3",
-                            "V", "#BDBDBD",
-                            "VI", "#BDBDBD",
-                            "#888888"
-                        ],
-                        "fill-opacity": 0.6
-                    },
                     "tooltip_fields": ["NAME_ENG", "IUCN_CAT", "DESIG_ENG", "ISO3", "GIS_AREA", "STATUS_YR"]
                 }
             ]
@@ -121,15 +104,6 @@
                     "id": "unified-pmtiles",
                     "display_name": "Watersheds (HydroBASINS)",
                     "visible": false,
-                    "default_style": {
-                        "fill-color": "#1565C0",
-                        "fill-opacity": 0
-                    },
-                    "outline_style": {
-                        "line-color": "#1565C0",
-                        "line-width": 1.0,
-                        "line-opacity": 0.7
-                    },
                     "tooltip_fields": ["HYBAS_ID", "PFAF_ID", "UP_AREA", "SUB_AREA"],
                     "versions": [
                         { "label": "L3 – Major Basins", "asset_id": "level-03-pmtiles" },
@@ -149,16 +123,7 @@
                 {
                     "id": "countries-pmtiles",
                     "display_name": "Countries",
-                    "visible": false,
-                    "default_style": {
-                        "fill-color": "#6A1B9A",
-                        "fill-opacity": 0.03
-                    },
-                    "outline_style": {
-                        "line-color": "#6A1B9A",
-                        "line-width": 1.2,
-                        "line-opacity": 0.7
-                    }
+                    "visible": false
                 }
             ]
         },
@@ -170,16 +135,7 @@
                 {
                     "id": "regions-pmtiles",
                     "display_name": "Regions / States",
-                    "visible": false,
-                    "default_style": {
-                        "fill-color": "#6A1B9A",
-                        "fill-opacity": 0.03
-                    },
-                    "outline_style": {
-                        "line-color": "#6A1B9A",
-                        "line-width": 0.8,
-                        "line-opacity": 0.6
-                    }
+                    "visible": false
                 }
             ]
         },
@@ -191,16 +147,7 @@
                 {
                     "id": "counties-pmtiles",
                     "display_name": "Counties",
-                    "visible": false,
-                    "default_style": {
-                        "fill-color": "#6A1B9A",
-                        "fill-opacity": 0.03
-                    },
-                    "outline_style": {
-                        "line-color": "#6A1B9A",
-                        "line-width": 0.4,
-                        "line-opacity": 0.5
-                    }
+                    "visible": false
                 }
             ]
         },
