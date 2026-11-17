@@ -1,194 +1,245 @@
 {
-    "sidebar": {
-        "enabled": true,
-        "chat_title": "Chat"
-    },
-    "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
-    "titiler_url": "https://titiler.nrp-nautilus.io",
-    "mcp_url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
-    "default_basemap": "plain",
-    "view": {
-        "center": [0, 20],
-        "zoom": 3,
-        "globe": true
-    },
-    "links": {
-        "github": "https://github.com/boettiger-lab/wetlands-v2",
-        "docs": "https://schmidtdse.github.io/glen/",
-        "carbon": true
-    },
-    "header": {
-        "nav": [
-            { "label": "About", "href": "https://schmidtdse.github.io/glen/", "icon": "info" },
-            { "label": "Data", "href": "#data", "icon": "database", "external": false },
-            { "label": "Basin explorer", "href": "explorer/", "external": false },
-            { "label": "GitHub", "href": "https://github.com/boettiger-lab/wetlands-v2", "icon": "github" },
-            { "label": "Carbon", "href": "https://carbon-api.nrp-nautilus.io/", "icon": "leaf" },
-            { "label": "Contact us", "href": "mailto:dse@berkeley.edu", "icon": "mail", "external": false }
-        ]
-    },
-    "welcome": {
-        "message": "Hi! I can help you explore global wetlands data and control the map. Try asking:",
-        "examples": [
-            "Tell me about the datasets you access and how you work.",
-            "Calculate vulnerable carbon stored in different wetlands of India?",
-            "Show Ramsar sites meeting Criterion 9; explain the criterion",
-            "Color Ramsar sites by the number of criteria they meet",
-            "Rank the top 10 level-3 hydrobasins by wetland extent, carbon, and NCP, normalized. Explain methodology and show them on map."
-        ]
-    },
-    "collections": [
-        {
-            "collection_id": "wetlands-glwd-v2",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/glwd/stac-collection.json",
-            "group": "Wetlands",
-            "assets": [
-                {
-                    "id": "glwd-main-class-cog",
-                    "display_name": "Global Wetlands (GLWD v2)",
-                    "visible": true
-                }
-            ]
-        },
-        {
-            "collection_id": "wetlands-ramsar",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/ramsar/stac-collection.json",
-            "group": "Wetlands",
-            "assets": [
-                {
-                    "id": "ramsar-pmtiles",
-                    "display_name": "Ramsar Sites",
-                    "visible": true,
-                    "tooltip_fields": ["Site name", "Country", "Area (ha)", "Wetland Type"]
-                }
-            ]
-        },
-        {
-            "collection_id": "irrecoverable-carbon",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-carbon/stac-collection.json",
-            "group": "Environment",
-            "assets": [
-                {
-                    "id": "v2-vulnerable-2024-cog",
-                    "display_name": "Vulnerable Carbon (2024)",
-                    "visible": false
-                }
-            ]
-        },
-        {
-            "collection_id": "ncp-biodiversity-indicators",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-ncp/biodiversity-indicators/stac-collection.json",
-            "group": "Environment",
-            "assets": [
-                {
-                    "id": "ncp-biod-nathab-cog",
-                    "display_name": "Nature's Contributions to People",
-                    "visible": false,
-                    "colormap": "viridis",
-                    "rescale": "0,19",
-                    "legend_label": "NCP Score"
-                }
-            ]
-        },
-        {
-            "collection_id": "wdpa",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-wdpa/wdpa/stac-collection.json",
-            "group": "Protected Areas",
-            "assets": [
-                {
-                    "id": "wdpa-pmtiles",
-                    "display_name": "Protected Areas (WDPA)",
-                    "visible": false,
-                    "tooltip_fields": ["NAME_ENG", "IUCN_CAT", "DESIG_ENG", "ISO3", "GIS_AREA", "STATUS_YR"]
-                }
-            ]
-        },
-        {
-            "collection_id": "hydrobasins-v1c",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-hydrobasins/stac-collection.json",
-            "group": "Hydrology",
-            "assets": [
-                {
-                    "id": "unified-pmtiles",
-                    "display_name": "Watersheds (HydroBASINS)",
-                    "visible": false,
-                    "tooltip_fields": ["HYBAS_ID", "PFAF_ID", "UP_AREA", "SUB_AREA"],
-                    "versions": [
-                        { "label": "L3 – Major Basins", "asset_id": "level-03-pmtiles" },
-                        { "label": "L4", "asset_id": "level-04-pmtiles" },
-                        { "label": "L5", "asset_id": "level-05-pmtiles" },
-                        { "label": "L6 – Sub-catchments", "asset_id": "unified-pmtiles" }
-                    ],
-                    "default_version": "L6 – Sub-catchments"
-                }
-            ]
-        },
-        {
-            "collection_id": "overture-divisions-countries-2026-02-18",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/countries/stac-collection.json",
-            "group": { "name": "Administrative Boundaries", "collapsed": true },
-            "assets": [
-                {
-                    "id": "countries-pmtiles",
-                    "display_name": "Countries",
-                    "visible": false
-                }
-            ]
-        },
-        {
-            "collection_id": "overture-divisions-regions-2026-02-18",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/regions/stac-collection.json",
-            "group": { "name": "Administrative Boundaries", "collapsed": true },
-            "assets": [
-                {
-                    "id": "regions-pmtiles",
-                    "display_name": "Regions / States",
-                    "visible": false
-                }
-            ]
-        },
-        {
-            "collection_id": "overture-divisions-counties-2026-02-18",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/counties/stac-collection.json",
-            "group": { "name": "Administrative Boundaries", "collapsed": true },
-            "assets": [
-                {
-                    "id": "counties-pmtiles",
-                    "display_name": "Counties",
-                    "visible": false
-                }
-            ]
-        },
-        {
-            "collection_id": "cgls-lc100-2019",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-land-cover/cgls-lc100-2019/stac-collection.json",
-            "group": "Land Cover",
-            "assets": [
-                {
-                    "id": "cgls-lc100-2019-cog",
-                    "display_name": "Global Land Cover (CGLS-LC100, 2019)",
-                    "visible": false
-                }
-            ]
-        },
-        {
-            "collection_id": "ghs-pop-2020",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-population/ghs-pop-2020/stac-collection.json",
-            "group": "Population",
-            "assets": [
-                {
-                    "id": "ghs-pop-2020-cog",
-                    "display_name": "Global Population Density (GHS-POP 2020)",
-                    "visible": false,
-                    "legend_label": "people per 90m cell"
-                }
-            ]
-        },
-        {
-            "collection_id": "inaturalist-ranges",
-            "collection_url": "https://s3-west.nrp-nautilus.io/public-inat/stac-collection.json",
-            "group": "Biodiversity",
-            "assets": []
-        }
+  "sidebar": {
+    "enabled": true,
+    "chat_title": "Chat"
+  },
+  "catalog": "https://s3-west.nrp-nautilus.io/public-data/stac/catalog.json",
+  "titiler_url": "https://titiler.nrp-nautilus.io",
+  "default_basemap": "plain",
+  "view": {
+    "center": [
+      0,
+      20
+    ],
+    "zoom": 3,
+    "globe": true
+  },
+  "links": {
+    "github": "https://github.com/boettiger-lab/wetlands-v2",
+    "docs": "https://schmidtdse.github.io/glen/",
+    "carbon": true
+  },
+  "header": {
+    "nav": [
+      { "label": "About", "href": "https://schmidtdse.github.io/glen/", "icon": "info" },
+      { "label": "Data", "href": "#data", "icon": "database", "external": false },
+      { "label": "Basin explorer", "href": "explorer/", "external": false },
+      { "label": "GitHub", "href": "https://github.com/boettiger-lab/wetlands-v2", "icon": "github" },
+      { "label": "Carbon", "href": "https://carbon-api.nrp-nautilus.io/", "icon": "leaf" },
+      { "label": "Contact us", "href": "mailto:dse@berkeley.edu", "icon": "mail", "external": false }
     ]
+  },
+  "welcome": {
+    "message": "Hi! I can help you explore global wetlands data and control the map. Try asking:",
+    "examples": [
+      "Tell me about the datasets you access and how you work.",
+      "Calculate vulnerable carbon stored in different wetlands of India?",
+      "Show Ramsar sites meeting Criterion 9; explain the criterion",
+      "Color Ramsar sites by the number of criteria they meet",
+      "Rank the top 10 level-3 hydrobasins by wetland extent, carbon, and NCP, normalized. Explain methodology and show them on map."
+    ]
+  },
+  "collections": [
+    {
+      "collection_id": "wetlands-glwd-v2",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/glwd/stac-collection.json",
+      "group": "Wetlands",
+      "assets": [
+        {
+          "id": "glwd-main-class-cog",
+          "display_name": "Global Wetlands (GLWD v2)",
+          "visible": true
+        }
+      ]
+    },
+    {
+      "collection_id": "wetlands-ramsar",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-wetlands/ramsar/stac-collection.json",
+      "group": "Wetlands",
+      "assets": [
+        {
+          "id": "ramsar-pmtiles",
+          "display_name": "Ramsar Sites",
+          "visible": true,
+          "tooltip_fields": [
+            "Site name",
+            "Country",
+            "Area (ha)",
+            "Wetland Type"
+          ]
+        }
+      ]
+    },
+    {
+      "collection_id": "irrecoverable-carbon",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-carbon/stac-collection.json",
+      "group": "Environment",
+      "assets": [
+        {
+          "id": "v2-vulnerable-2024-cog",
+          "display_name": "Vulnerable Carbon (2024)",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "collection_id": "ncp-biodiversity-indicators",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-ncp/biodiversity-indicators/stac-collection.json",
+      "group": "Environment",
+      "assets": [
+        {
+          "id": "ncp-biod-nathab-cog",
+          "display_name": "Nature's Contributions to People",
+          "visible": false,
+          "colormap": "viridis",
+          "rescale": "0,19",
+          "legend_label": "NCP Score"
+        }
+      ]
+    },
+    {
+      "collection_id": "wdpa",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-wdpa/wdpa/stac-collection.json",
+      "group": "Protected Areas",
+      "assets": [
+        {
+          "id": "wdpa-pmtiles",
+          "display_name": "Protected Areas (WDPA)",
+          "visible": false,
+          "tooltip_fields": [
+            "NAME_ENG",
+            "IUCN_CAT",
+            "DESIG_ENG",
+            "ISO3",
+            "GIS_AREA",
+            "STATUS_YR"
+          ]
+        }
+      ]
+    },
+    {
+      "collection_id": "hydrobasins-v1c",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-hydrobasins/stac-collection.json",
+      "group": "Hydrology",
+      "assets": [
+        {
+          "id": "unified-pmtiles",
+          "display_name": "Watersheds (HydroBASINS)",
+          "visible": false,
+          "tooltip_fields": [
+            "HYBAS_ID",
+            "PFAF_ID",
+            "UP_AREA",
+            "SUB_AREA"
+          ],
+          "versions": [
+            {
+              "label": "L3 – Major Basins",
+              "asset_id": "level-03-pmtiles"
+            },
+            {
+              "label": "L4",
+              "asset_id": "level-04-pmtiles"
+            },
+            {
+              "label": "L5",
+              "asset_id": "level-05-pmtiles"
+            },
+            {
+              "label": "L6 – Sub-catchments",
+              "asset_id": "unified-pmtiles"
+            }
+          ],
+          "default_version": "L6 – Sub-catchments"
+        }
+      ]
+    },
+    {
+      "collection_id": "overture-divisions-countries-2026-02-18",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/countries/stac-collection.json",
+      "group": {
+        "name": "Administrative Boundaries",
+        "collapsed": true
+      },
+      "assets": [
+        {
+          "id": "countries-pmtiles",
+          "display_name": "Countries",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "collection_id": "overture-divisions-regions-2026-02-18",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/regions/stac-collection.json",
+      "group": {
+        "name": "Administrative Boundaries",
+        "collapsed": true
+      },
+      "assets": [
+        {
+          "id": "regions-pmtiles",
+          "display_name": "Regions / States",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "collection_id": "overture-divisions-counties-2026-02-18",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-overturemaps/2026-02-18.0/counties/stac-collection.json",
+      "group": {
+        "name": "Administrative Boundaries",
+        "collapsed": true
+      },
+      "assets": [
+        {
+          "id": "counties-pmtiles",
+          "display_name": "Counties",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "collection_id": "cgls-lc100-2019",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-land-cover/cgls-lc100-2019/stac-collection.json",
+      "group": "Land Cover",
+      "assets": [
+        {
+          "id": "cgls-lc100-2019-cog",
+          "display_name": "Global Land Cover (CGLS-LC100, 2019)",
+          "visible": false
+        }
+      ]
+    },
+    {
+      "collection_id": "ghs-pop-2020",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-population/ghs-pop-2020/stac-collection.json",
+      "group": "Population",
+      "assets": [
+        {
+          "id": "ghs-pop-2020-cog",
+          "display_name": "Global Population Density (GHS-POP 2020)",
+          "visible": false,
+          "legend_label": "people per 90m cell"
+        }
+      ]
+    },
+    {
+      "collection_id": "inaturalist-ranges",
+      "collection_url": "https://s3-west.nrp-nautilus.io/public-inat/stac-collection.json",
+      "group": "Biodiversity",
+      "assets": []
+    }
+  ],
+  "plugins": [
+    {
+      "url": "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.4/core/plugins/mcp.js",
+      "options": {
+        "url": "https://duckdb-mcp.nrp-nautilus.io/mcp",
+        "prompt": "geospatial-analyst"
+      }
+    },
+    "https://cdn.jsdelivr.net/gh/SchmidtDSE/glen@v4.0.4/core/plugins/hex.js"
+  ],
+  "export": true
 }
