@@ -19,6 +19,16 @@
     "docs": "https://schmidtdse.github.io/glen/",
     "carbon": true
   },
+  "header": {
+    "nav": [
+      { "label": "About", "href": "https://schmidtdse.github.io/glen/", "icon": "info" },
+      { "label": "Data", "href": "#data", "icon": "database", "external": false },
+      { "label": "Basin explorer", "href": "explorer/", "external": false },
+      { "label": "GitHub", "href": "https://github.com/boettiger-lab/wetlands-v2", "icon": "github" },
+      { "label": "Carbon", "href": "https://carbon-api.nrp-nautilus.io/", "icon": "leaf" },
+      { "label": "Contact us", "href": "mailto:dse@berkeley.edu", "icon": "mail", "external": false }
+    ]
+  },
   "welcome": {
     "message": "Hi! I can help you explore global wetlands data and control the map. Try asking:",
     "examples": [
