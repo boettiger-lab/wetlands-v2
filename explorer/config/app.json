@@ -157,5 +157,14 @@
             "visible": false,
             "above": true
         }
+    ],
+    "pages": [
+        {
+            "id": "data",
+            "label": "Data",
+            "file": "config/data.html",
+            "full": true,
+            "sources": true
+        }
     ]
 }
