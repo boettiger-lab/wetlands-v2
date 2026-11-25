@@ -35,9 +35,14 @@ spec:
           mkdir -p /usr/share/nginx/html/explorer
           cp -r /tmp/repo/explorer/index.html /tmp/repo/explorer/app.css \
                 /tmp/repo/explorer/config /tmp/repo/explorer/data /usr/share/nginx/html/explorer/
+          # The shared nginx snippets (glen-ops#340), pinned like the GLEN version.
+          git clone --depth 1 --branch nginx-v2 https://github.com/SchmidtDSE/glen-template.git /tmp/glen
+          cp /tmp/glen/nginx/* /glen-nginx/
         volumeMounts:
         - name: website-content
           mountPath: /usr/share/nginx/html
+        - name: glen-nginx
+          mountPath: /glen-nginx
       containers:
       - name: nginx
         image: nginx:1.31.9-alpine
@@ -46,6 +51,17 @@ spec:
         env:
         - name: TMPDIR
           value: "/tmp"
+        # Per-app values for the shared nginx snippets (glen-template nginx/render.sh).
+        - name: GLEN_APP
+          value: "wetlands-v2"
+        - name: LLM_UPSTREAM
+          value: "http://open-llm-proxy.biodiversity.svc.cluster.local:8002"
+        - name: MCP_UPSTREAM
+          value: "http://mcp-server-duckdb.biodiversity.svc.cluster.local:8000"
+        - name: MCP_HOST
+          value: "duckdb-mcp.nrp-nautilus.io"
+        - name: MCP_TILES_SOURCE
+          value: "https://duckdb-mcp.nrp-nautilus.io/tiles/"
         # Same-origin MCP path: nginx proxies it to the shared server and
         # attaches the bearer token, so the browser never holds the token
         # (geo-query#453). Absolute, because GLEN does new URL(mcp_url).
@@ -54,7 +70,7 @@ spec:
         - name: MCP_AUTH_TOKEN
           valueFrom:
             secretKeyRef:
-              name: duckdb-mcp-mirror-auth
+              name: duckdb-mcp-auth
               key: MCP_AUTH_TOKEN
         - name: PROXY_KEY
           valueFrom:
@@ -62,27 +78,9 @@ spec:
               name: open-llm-proxy-app-keys
               key: wetlands-v2
               optional: true
-        command:
-        - sh
-        - -c
-        - |
-          apk add --no-cache gettext
-          # Client-side config: no secrets.
-          envsubst '$${MCP_SERVER_URL}' < /config/config.template.json \
-            > /usr/share/nginx/html/config.json
-          # Server-side nginx config: substitutes ${PROXY_KEY} into the
-          # /api/llm/ reverse proxy's Authorization header. Limited to
-          # ${PROXY_KEY} so nginx's own $uri / $remote_addr variables
-          # are preserved.
-          envsubst '$${PROXY_KEY} $${MCP_AUTH_TOKEN}' < /nginx-template/nginx.conf.template \
-            > /etc/nginx/conf.d/default.conf
-          # Pin worker_processes low: the base image defaults to
-          # 'auto' (one worker per CPU), which spawns hundreds of
-          # workers on large NRP nodes and OOM-kills the 256Mi limit.
-          # -g can't override it (duplicate directive), so patch the
-          # main config in place before launching.
-          sed -i 's/^worker_processes.*/worker_processes 2;/' /etc/nginx/nginx.conf
-          nginx -g 'daemon off;'
+        # Renders the shared snippets and this app's server block, writes
+        # config.json, and starts nginx.
+        command: ["sh", "/glen-nginx/render.sh"]
         resources:
           requests:
             cpu: "100m"
@@ -98,6 +96,9 @@ spec:
           readOnly: true
         - name: nginx-conf-d
           mountPath: /etc/nginx/conf.d
+        - name: glen-nginx
+          mountPath: /glen-nginx
+          readOnly: true
         - name: config-template
           mountPath: /config
         livenessProbe:
@@ -122,4 +123,6 @@ spec:
         configMap:
           name: wetlands-v2-nginx
       - name: nginx-conf-d
+        emptyDir: {}
+      - name: glen-nginx
         emptyDir: {}
